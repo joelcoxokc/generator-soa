@@ -17,11 +17,6 @@ Generator.prototype.promptClientService = function () {
   var prompts = [
     {
       type    : 'input',
-      name    : 'service',
-      message : 'Would you like a client side service with this server?',
-      default : 'Y/n' // Default to current folder name
-    },{
-      type    : 'input',
       name    : 'name',
       message : 'What is the name of this server?',
       default : this.arguments // Default to current folder name
@@ -30,42 +25,57 @@ Generator.prototype.promptClientService = function () {
       name    : 'servicePort',
       message : 'What port would you like this server to run on?',
       default : 3000 // Default to current folder name
+    },{
+      type: "list",
+      name: "ngComponent",
+      default: 'route',
+      message: "What type of angular component would you like to connect with?",
+      choices: ["route", "service"],
+      filter: function( val ) { return val.toLowerCase(); }
+    }{
+      name: 'route_dir',
+      message: 'Where would you like to create this route?',
+      default: 'client/app'
+    },{
+      name: 'route',
+      message: 'What will the url of your route be?',
+      default: '/' + name
+    },{
+      name: 'model_dir',
+      message: 'Where would you like to create this client api model?',
+      default: 'client/app/models'
     }
-
   ]
   this.prompt(prompts, function (props) {
-    if(props.service === 'Y/n' || props.service === 'y' || props.service === 'Y'){
-      this.composeWith('ng-component:service', {arguments: this.arguments}, { local: require.resolve('generator-ng-component/service') });
-    }
-    if(props.servicePort){
-      this.servicePort = props.servicePort;
-    }
+    this.servicePort = props.servicePort;
+    this.composeWith('ng-component:' +props.ngComponent, {arguments: this.arguments}, { local: require.resolve('generator-ng-component/'+props.ngComponent) });
+    // this.composeWith('ng-component:model', {arguments: this.arguments}, { local: require.resolve('generator-ng-component/model') });
+    this.route_dir = path.join(props.route_dir, this.name);
+    this.model_dir = path.join(props.model_dir, this.name);
+    this.route = props.route;
     done();
   }.bind(this));
 };
 
-Generator.generateNgComponent = function(){
-  this.prompt([
-      {
-        type: "list",
-        name: "ngComponent",
-        default: 1,
-        message: "What type of angular component would you like to connect with?",
-        choices: ["route", "service"],
-        filter: function( val ) { return val.toLowerCase(); }
-      }
-      ], function (answers) {
-        this.filters[answers.script] = true;
-        this.filters[answers.markup] = true;
-        this.filters[answers.stylesheet] = true;
-        this.filters[answers.router] = true;
-        this.filters.bootstrap = !!answers.bootstrap;
-        this.filters.uibootstrap =  !!answers.uibootstrap;
-      cb();
-      }.bind(this));
-}
+Generator..prototype.generateRoute = function(){
 
+
+
+};
+
+Generator.prototype.createFiles = function createFiles() {
+  var basePath = this.config.get('basePath') || '';
+  this.htmlUrl = ngUtil.relativeUrl(basePath, path.join(this.dir,this.name + '.html'));
+  ngUtil.copyTemplates(this, 'route');
+};
+}
+Generator.prototype.generateModel = function(){
+  this.sourceRoot(path.join(__dirname, '../model'));
+  ngUtil.processDirectory(this, '.', this.dir)
+}
 Generator.prototype.generateServer = function () {
+
+  this.log(this.filters)
   var dest = 'servers/'+this.arguments;
   this.sourceRoot(path.join(__dirname, './templates'));
   ngUtil.processDirectory(this, '.', dest);

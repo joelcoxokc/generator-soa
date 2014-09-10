@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('<%= scriptAppName %>', [<%= angularModules %>])
-  <% if(filters.ngroute) { %>.config(function ($routeProvider, $locationProvider<% if(filters.auth) { %>, $httpProvider<% } %>) {
+  <% if(filters.ngroute) { %>.config(function (RestangularProvider, $routeProvider, $locationProvider<% if(filters.auth) { %>, $httpProvider<% } %>) {
+    RestangularProvider.setBaseUrl('http://localhost:9000/api');
     $routeProvider
       .otherwise({
         redirectTo: '/'

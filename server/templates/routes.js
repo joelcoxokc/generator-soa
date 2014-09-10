@@ -5,11 +5,11 @@
 'use strict';
 
 var errors = require('./components/errors');
-
+var cors = require('cors');
 module.exports = function(app) {
 
   // Insert routes below
-
+  app.use(cors());
   app.use('/api/<%= name %>', require('./api/<%= name %>'));
 
   // All undefined asset or api routes should return a 404
