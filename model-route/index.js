@@ -37,7 +37,13 @@ Generator.prototype.askFor = function askFor() {
   this.prompt(prompts, function (props){
     this.route = props.route;
     this.dir = path.join(props.dir, this.name);
-    this.htmlUrl = path.join(this.dir, this.name + '.html');
+    var dir = this.dir;
+    if(dir.split('/')[0] === 'client'){
+      dir = dir.split('/').splice(1).join('/')
+    }
+    this.log(dir)
+    this.log(this.dir)
+    this.htmlUrl = path.join(dir, this.name + '.html');
 
     done();
   }.bind(this));

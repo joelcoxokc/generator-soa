@@ -28,6 +28,8 @@ Generator.prototype.askFor = function askFor() {
     this.filters.useRouter = false;
     this.config.set('filters', this.filters)
     if(this.arguments[1] === 'server') this.filters.server = true;
+    if(this.arguments[2]) this.filters.serverPort = this.arguments[2];
+    this.log(this.arguments)
     done();
   }.bind(this));
 

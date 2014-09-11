@@ -50,7 +50,8 @@ Generator.prototype.generateRoute = function(){
 };
 
 Generator.prototype.generateModel = function(){
-  this.arguments.push('server');
+  this.arguments.push('server', String(this.servicePort));
+  // this.arguments.push(this.serverPort);
   this.composeWith('soa:model', {arguments: this.arguments}, {local:require.resolve('../model')});
 };
 

@@ -3,7 +3,7 @@
   <% if(filters.server){ %>
    var <%= cameledName %>Provider = function(Restangular){
       return Restangular.withConfig(function(RestangularConfigurer) {
-        RestangularConfigurer.setBaseUrl('http://localhost:');
+        RestangularConfigurer.setBaseUrl('http://localhost:<%= filters.serverPort %>/api');
       });
    };
    <% } %>
