@@ -14,8 +14,13 @@
       var API = Restangular.all('<%= name %>');
     <% } %>
     // <%= cameledName %> API here
+
     return {
-      get: get
+      all: all,
+      find: find,
+      create: create,
+      update: update,
+      destroy: destroy
     };
 
     /////////////
