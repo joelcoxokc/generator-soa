@@ -1,7 +1,8 @@
 'use strict'
 
 angular.module '<%= scriptAppName %>'
-.config ($routeProvider) ->
-  $routeProvider.when '<%= route %>',
+.config ($stateProvider) ->
+  $stateProvider.state '<%= name %>',
+    url: '<%= route %>'
     templateUrl: '<%= htmlUrl %>'
     controller: '<%= classedName %>Ctrl'

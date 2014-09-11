@@ -17,16 +17,20 @@ Generator.prototype.askFor = function askFor() {
   var prompts = [
     {
       name: 'dir',
-      message: 'Where would you like to create this service?',
-      default: 'client/app/services'
+      message: 'Where would you like to create the client side model?',
+      default: 'client/app/models'
     }
   ];
   this.prompt(prompts, function (props){
     this.route = props.route;
     this.dir = path.join(props.dir, this.name);
-    // this.filters.hello = true;
+    this.filters.server = false;
+    this.filters.useRouter = false;
+    this.config.set('filters', this.filters)
+    if(this.arguments[1] === 'server') this.filters.server = true;
     done();
   }.bind(this));
+
 };
 Generator.prototype.createFiles = function createFiles() {
   var dest = this.dir;

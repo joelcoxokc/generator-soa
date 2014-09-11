@@ -244,7 +244,7 @@ var AngularFullstackGenerator = yeoman.generators.Base.extend({
       "'ngCookies'",
       "'ngResource'",
       "'ngSanitize'",
-      "'restangular"
+      "'restangular'"
     ];
     if(this.filters.ngroute) angModules.push("'ngRoute'");
     if(this.filters.socketio) angModules.push("'btford.socket-io'");
