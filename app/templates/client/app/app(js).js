@@ -2,7 +2,7 @@
 
 angular.module('<%= scriptAppName %>', [<%= angularModules %>])
   <% if(filters.ngroute) { %>.config(function (RestangularProvider, $routeProvider, $locationProvider<% if(filters.auth) { %>, $httpProvider<% } %>) {
-    RestangularProvider.setBaseUrl('http://localhost:9000/api');
+    RestangularProvider.setBaseUrl('/api');
     $routeProvider
       .otherwise({
         redirectTo: '/'
@@ -10,9 +10,10 @@ angular.module('<%= scriptAppName %>', [<%= angularModules %>])
 
     $locationProvider.html5Mode(true);<% if(filters.auth) { %>
     $httpProvider.interceptors.push('authInterceptor');<% } %>
-  })<% } %><% if(filters.uirouter) { %>.config(function ($stateProvider, $urlRouterProvider, $locationProvider<% if(filters.auth) { %>, $httpProvider<% } %>) {
+  })<% } %><% if(filters.uirouter) { %>.config(function (RestangularProvider, $stateProvider, $urlRouterProvider, $locationProvider<% if(filters.auth) { %>, $httpProvider<% } %>) {
     $urlRouterProvider
       .otherwise('/');
+    RestangularProvider.setBaseUrl('/api');
 
     $locationProvider.html5Mode(true);<% if(filters.auth) { %>
     $httpProvider.interceptors.push('authInterceptor');<% } %>
