@@ -1,27 +1,41 @@
 'use strict';
+(function(){
 
-angular.module('<%= scriptAppName %>')
-  .controller('MainCtrl', function ($scope, $http<% if(filters.socketio) { %>, socket<% } %>) {
+  var MainCtrl = function ($scope, Thing, $http<% if(filters.socketio) { %>, socket<% } %>) {
+
     $scope.awesomeThings = [];
+    $scope.getThings = getThings;
+    <% if(filters.mongoose) { %>$scope.addThing = addThing;
+    $scope.deleteThing = deleteThing;<% } %>
 
-    $http.get('/api/things').success(function(awesomeThings) {
-      $scope.awesomeThings = awesomeThings;<% if(filters.socketio) { %>
-      socket.syncUpdates('thing', $scope.awesomeThings);<% } %>
-    });
-<% if(filters.mongoose) { %>
-    $scope.addThing = function() {
+    $scope.getThings()
+    ////////////////////
+    function getThings(){
+      Thing.all().then(function (data){
+        $scope.awesomeThings = data;<% if(filters.socketio) { %>
+        socket.syncUpdates('thing', $scope.awesomeThings);<% } %>
+      });
+    }
+  <% if(filters.mongoose) { %>
+    function addThing() {
       if($scope.newThing === '') {
         return;
       }
-      $http.post('/api/things', { name: $scope.newThing });
+      $scope.awesomeThings.post({name: $scope.newThing});
       $scope.newThing = '';
-    };
+    }
 
-    $scope.deleteThing = function(thing) {
-      $http.delete('/api/things/' + thing._id);
+    function deleteThing(thing) {
+      $scope.awesomeThings.remove(thing);
     };<% } %><% if(filters.socketio) { %>
 
     $scope.$on('$destroy', function () {
       socket.unsyncUpdates('thing');
     });<% } %>
-  });
+  };
+
+  MainCtrl.$inject = ['$scope', 'Thing', '$http'<% if(filters.socketio) { %>, 'socket'<% } %>];
+  angular
+    .module('<%= scriptAppName %>')
+    .controller('MainCtrl', MainCtrl);
+}).call(this);

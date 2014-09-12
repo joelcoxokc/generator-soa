@@ -2,7 +2,7 @@
 'use strict';
 
 angular.module('<%= scriptAppName %>')
-  .factory('socket', function(socketFactory) {
+  .factory('socket', function(socketFactory, Restangular) {
 
     // socket.io now auto-configures its connection when we ommit a connection url
     var ioSocket = io('', {
@@ -39,16 +39,23 @@ angular.module('<%= scriptAppName %>')
           var index = array.indexOf(oldItem);
           var event = 'created';
 
-          // replace oldItem if it exists
-          // otherwise just add item to the collection
-          if (oldItem) {
-            array.splice(index, 1, item);
-            event = 'updated';
-          } else {
-            array.push(item);
-          }
+          // We have to use Restangular to make a call for the item, in order to add it to the Restangular Collection
+          Restangular
+            .one(modelName + 's', item._id)
+            .get()
+            .then(function (data){
+              // replace oldItem if it exists
+              // otherwise just add item to the collection
+              if (oldItem) {
+                array.splice(index, 1, data);
+                event = 'updated';
+              } else {
+                array.push(data);
+              }
 
-          cb(event, item, array);
+              cb(event, data, array);
+            });
+
         });
 
         /**

@@ -3,6 +3,11 @@
 angular.module('<%= scriptAppName %>', [<%= angularModules %>])
   <% if(filters.ngroute) { %>.config(function (RestangularProvider, $routeProvider, $locationProvider<% if(filters.auth) { %>, $httpProvider<% } %>) {
     RestangularProvider.setBaseUrl('/api');
+    RestangularProvider.setRestangularFields({
+      id: "_id",
+      route: "restangularRoute",
+      selfLink: "self.href"
+    });
     $routeProvider
       .otherwise({
         redirectTo: '/'
@@ -14,6 +19,11 @@ angular.module('<%= scriptAppName %>', [<%= angularModules %>])
     $urlRouterProvider
       .otherwise('/');
     RestangularProvider.setBaseUrl('/api');
+    RestangularProvider.setRestangularFields({
+      id: "_id",
+      route: "restangularRoute",
+      selfLink: "self.href"
+    });
 
     $locationProvider.html5Mode(true);<% if(filters.auth) { %>
     $httpProvider.interceptors.push('authInterceptor');<% } %>
