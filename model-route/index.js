@@ -38,6 +38,7 @@ Generator.prototype.askFor = function askFor() {
     },
   ];
   this.prompt(prompts, function (props){
+    if(this.config.get('filters').restangular) this.filters.restangular = true;
     this.route = props.route;
     this.dir = path.join(props.dir, this.name);
     var dir = this.dir;

@@ -1,18 +1,23 @@
 'use strict';
 (function(){
 
-  var <%= classedName %>Ctrl = function ($scope,  <%= cameledName %>) {
+  var <%= classedName %>Ctrl = function ($scope,  <%= classedName %>) {
     var vm = this;
-
-    <%= cameledName %>.get()
+    <% if(filters.restangular){ %>
+    <%= classedName %>.getList()
       .then(function (data){
         vm.<%= name %>s = data;
       });
+    <% } else { %>
+    <%= classedName %>.all()
+      .then(function (data){
+        vm.<%= name %>s = data;
+      });
+    <% } %>
     // $scope.message = 'Hello';
   };
   <%= classedName %>Ctrl
-    .$inject = ['$scope', '<%= cameledName %>'];
-    // .$inject = ['$scope', '<%= cameledName %>Service'];
+    .$inject = ['$scope', '<%= classedName %>'];
 
   angular
     .module('<%= scriptAppName %>')

@@ -105,12 +105,17 @@ var AngularFullstackGenerator = yeoman.generators.Base.extend({
         message: "Would you like to include Bootstrap?"
       }, {
         type: "confirm",
+        name: "restangular",
+        message: "Would you like to include Restangular?"
+      }, {
+        type: "confirm",
         name: "uibootstrap",
         message: "Would you like to include UI Bootstrap?",
         when: function (answers) {
           return answers.bootstrap;
         }
       }], function (answers) {
+        this.filters[answers.restangular] = true;
         this.filters[answers.script] = true;
         this.filters[answers.markup] = true;
         this.filters[answers.stylesheet] = true;

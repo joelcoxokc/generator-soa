@@ -19,20 +19,18 @@ Generator.prototype.askFor = function askFor() {
       name: 'dir',
       message: 'Where would you like to create the client side model?',
       default: 'client/app/models'
-    },{
-      name: 'crud',
-      type: 'confirm',
-      message: 'Would you like some C.R.U.D?'
     }
   ];
   this.prompt(prompts, function (props){
-
-    this.route = props.route;
+    if(this.config.get('filters').restangular) this.filters.restangular = true;
+    if (this.config.get('pluralizeRoutes') !== false) {
+      name = name + 's';
+      this.route = name;
+    }
     this.dir = path.join(props.dir, this.name);
     this.filters.server = false;
     this.filters.useRouter = false;
     this.config.set('filters', this.filters)
-    if(props.crud) this.filters.crud = true;
     if(this.arguments[1] === 'server') this.filters.server = true;
     if(this.arguments[2]) this.filters.serverPort = this.arguments[2];
     this.log(this.arguments)

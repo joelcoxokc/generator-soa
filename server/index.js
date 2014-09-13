@@ -14,7 +14,9 @@ util.inherits(Generator, ScriptBase);
 Generator.prototype.promptClientService = function () {
   var done = this.async();
   var name = this.name;
-
+  if (this.config.get('pluralizeRoutes') !== false) {
+    name = name + 's';
+  }
   var prompts = [
     {
       type    : 'input',
@@ -27,6 +29,11 @@ Generator.prototype.promptClientService = function () {
       message : 'What port would you like this server to run on?',
       default : 3000 // Default to current folder name
     },{
+      type: "input",
+      name: "route",
+      message: "What would you like the api route to be?",
+      default : '/' + name
+    },{
       type: "confirm",
       name: "useRoute",
       message: "Would you like a client route to go with this server",
@@ -34,6 +41,7 @@ Generator.prototype.promptClientService = function () {
   ];
   this.prompt(prompts, function (props) {
     this.servicePort = props.servicePort;
+    this.route = props.route;
 
     if(props.useRoute) this.filters.useRoute = true;
     this.filters.server = true;
