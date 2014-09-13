@@ -1,21 +1,16 @@
 'use strict';
+(function(){
+angular
+  .module('<%= scriptAppName %>', [<%= angularModules %>])
+  .config( appConfiguration )
+  .run( appRun );
 
-angular.module('<%= scriptAppName %>', [<%= angularModules %>])
-  <% if(filters.ngroute) { %>.config(function (RestangularProvider, $routeProvider, $locationProvider<% if(filters.auth) { %>, $httpProvider<% } %>) {
-    RestangularProvider.setBaseUrl('/api');
-    RestangularProvider.setRestangularFields({
-      id: "_id",
-      route: "restangularRoute",
-      selfLink: "self.href"
-    });
-    $routeProvider
-      .otherwise({
-        redirectTo: '/'
-      });
+  appConfiguration
+    .$inject = ['RestangularProvider', '$stateProvider', '$urlRouterProvider', '$locationProvider'<% if(filters.auth) { %>, '$httpProvider'<% } %>]
 
-    $locationProvider.html5Mode(true);<% if(filters.auth) { %>
-    $httpProvider.interceptors.push('authInterceptor');<% } %>
-  })<% } %><% if(filters.uirouter) { %>.config(function (RestangularProvider, $stateProvider, $urlRouterProvider, $locationProvider<% if(filters.auth) { %>, $httpProvider<% } %>) {
+  ///////////
+
+  function appConfiguration(RestangularProvider, $stateProvider, $urlRouterProvider, $locationProvider<% if(filters.auth) { %>, $httpProvider<% } %>) {
     $urlRouterProvider
       .otherwise('/');
     RestangularProvider.setBaseUrl('/api');
@@ -27,36 +22,10 @@ angular.module('<%= scriptAppName %>', [<%= angularModules %>])
 
     $locationProvider.html5Mode(true);<% if(filters.auth) { %>
     $httpProvider.interceptors.push('authInterceptor');<% } %>
-  })<% } %><% if(filters.auth) { %>
-
-  .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
-    return {
-      // Add authorization token to headers
-      request: function (config) {
-        config.headers = config.headers || {};
-        if ($cookieStore.get('token')) {
-          config.headers.Authorization = 'Bearer ' + $cookieStore.get('token');
-        }
-        return config;
-      },
-
-      // Intercept 401s and redirect you to login
-      responseError: function(response) {
-        if(response.status === 401) {
-          $location.path('/login');
-          // remove any stale tokens
-          $cookieStore.remove('token');
-          return $q.reject(response);
-        }
-        else {
-          return $q.reject(response);
-        }
-      }
-    };
-  })
-
-  .run(function ($rootScope, $location, Auth) {
-    // Redirect to login if route requires auth and you're not logged in
+  }
+  <% if(filters.auth) { %>
+  function appRun($rootScope, $location, Auth) {
+  // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on(<% if(filters.ngroute) { %>'$routeChangeStart'<% } %><% if(filters.uirouter) { %>'$stateChangeStart'<% } %>, function (event, next) {
       Auth.isLoggedInAsync(function(loggedIn) {
         if (next.authenticate && !loggedIn) {
@@ -64,4 +33,6 @@ angular.module('<%= scriptAppName %>', [<%= angularModules %>])
         }
       });
     });
-  })<% } %>;
+  }<% } %>
+
+}).call(this);
