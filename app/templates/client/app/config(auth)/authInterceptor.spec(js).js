@@ -3,7 +3,7 @@
 describe('Service: people', function () {
 
   // load the service's module
-  beforeEach(module('myApp'));
+  beforeEach(module('<%= scriptAppName %>'));
 
   // instantiate service
   var authInterceptor;

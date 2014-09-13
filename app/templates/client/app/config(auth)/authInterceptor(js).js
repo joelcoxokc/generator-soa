@@ -1,7 +1,7 @@
 'use strict';
 (function(){
   angular
-    .module('myApp')
+    .module('<%= scriptAppName %>')
     .factory( 'authInterceptor', authInterceptor);
 
   authInterceptor
