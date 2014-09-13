@@ -28,7 +28,7 @@
     }
 
     function deleteThing(thing) {
-      thing.remove();
+      $scope.awesomeThings.one(thing._id).remove();
     }<% } %><% if(filters.socketio) { %>
 
     $scope.$on('$destroy', function () {

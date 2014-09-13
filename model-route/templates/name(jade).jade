@@ -1,5 +1,25 @@
-.col-md-12
-    | This is the <%= name %> view.
-    ul.liist-group
-      li.list-group-item(ng-repeat="<%= name %> in vm.<%= name %>s")
-        p {{<%= name %>}}
+div(ng-include='"components/navbar/navbar.html"')
+div.col-md-12
+  div.panel.panel-primary
+    div.panel-heading
+      | This is the <%= name %> view.
+    div.panel-body
+      ul.liist-group
+        li.list-group-item(ng-repeat="<%= name %> in vm.<%= name %>s")
+          form(ng-submit="<%= name %>.save(); editMode = false")
+            table.table-full
+              tr
+                td.button
+                  a.btn.btn-primary(href="<%= route %>/{{<%= name %>._id}}") View
+                td
+                  p(ng-hide="editMode") {{ <%= name %>.name}}
+                  input.form-control(type="text" ng-show="editMode" ng-model="<%= name %>.name" placehoder="Name")
+                td
+                  p(ng-hide="editMode") {{<%= name %>.info}}
+                  input.form-control(type="text" ng-show="editMode" ng-model="<%= name %>.info" placehoder="Info")
+                td.button
+                  button.btn.btn-warning(type="button" ng-hide="editMode" ng-click="editMode = true") Edit
+                  button.btn.btn-info(type="submit" ng-show="editMode") Save
+                  button.btn.btn-danger(type="button" ng-show="editMode" ng-click="<%= name %>.remove()")
+                    i.fa.fa-trash-o
+

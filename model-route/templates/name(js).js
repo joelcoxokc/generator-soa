@@ -14,17 +14,11 @@
     //////////////
 
     function resolved<%= classedName %>(<%= classedName %>){
-    <% if(filters.restangular){ %>
       return <%= classedName %>.getList()
         .then(function (data){
           return data;
         });
-    <% } else { %>
-      return <%= classedName %>.all()
-        .then(function (data){
-          return data;
-        });
-    <% } %>
+
 
     }
   };

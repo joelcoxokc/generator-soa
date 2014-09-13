@@ -2,7 +2,7 @@
 'use strict';
 (function(){
 
-  var socket = function (socketFactory, BuildSocket) {
+  var ThingSocket = function (socketFactory, BuildSocket) {
 
     // socket.io now auto-configures its connection when we ommit a connection url
     var ioSocket = io('', {
@@ -20,10 +20,10 @@
     return newSocket
   }
 
-  socket.$inject = ['socketFactory', 'BuildSocket'];
+  ThingSocket.$inject = ['socketFactory', 'BuildSocket'];
   angular
     .module('<%= scriptAppName %>')
-    .factory('socket', socket);
+    .factory('ThingSocket', ThingSocket);
 
 }).call(this);
 

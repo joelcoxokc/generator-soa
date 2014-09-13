@@ -2,10 +2,10 @@
 'use strict';
 (function(){
 
-  var socket = function (socketFactory, BuildSocket) {
+  var <%= classedName %>Socket = function (socketFactory, BuildSocket) {
 
     // socket.io now auto-configures its connection when we ommit a connection url
-    var ioSocket = io('', {
+    var ioSocket = io('http://localhost:<%= filters.serverPort %>', {
       // Send auth token on connection, you will need to DI the Auth service above
       // 'query': 'token=' + Auth.getToken()
       path: '/socket.io-client'
@@ -20,10 +20,10 @@
     return newSocket
   }
 
-  socket.$inject = ['socketFactory', 'BuildSocket'];
+  <%= classedName %>Socket.$inject = ['socketFactory', 'BuildSocket'];
   angular
     .module('<%= scriptAppName %>')
-    .factory('socket', socket);
+    .factory('<%= classedName %>Socket', <%= classedName %>Socket);
 
 }).call(this);
 
