@@ -18,42 +18,18 @@ Generator.prototype.askFor = function askFor() {
     {
       name: 'dir',
       message: 'Where would you like to create the client side model?',
-      default: 'client/app/models'
-    },{
-      type: 'confirm',
-      name: 'restangular',
-      message: 'Would you like to use Restangular?',
+      default: this.arguments[3]
     }
-  ];
   this.prompt(prompts, function (props){
-    if(props.restangular) this.filters.restangular = true;
-    if (this.config.get('pluralizeRoutes') !== false) {
-      name = name + 's';
-      this.route = name;
-    }
-
-    this.dir = path.join(props.dir, this.name);
-
 
     if(this.arguments[1] === 'server') this.filters.server = true;
     if(this.arguments[2]) this.filters.serverPort = this.arguments[2];
-    console.log('restangular', this.filters)
-    console.log('server', this.filters.server)
+    if(this.arguments[3]) this.dir = this.arguments[3];
+
     done();
   }.bind(this));
 
 };
-
-Generator.prototype.createSocket = function createSocket() {
-  if(this.filters.server){
-    var args = Array.prototype.slice.call(this.arguments);
-    args.push(null)
-    args.push(this.filters.serverPort)
-    args.push(this.dir)
-    this.composeWith('soa:socket', {arguments: args}, {local:require.resolve('../socket')});
-  }
-}
-
 Generator.prototype.createFiles = function createFiles() {
   var dest = this.dir;
   this.sourceRoot(path.join(__dirname, './templates'));

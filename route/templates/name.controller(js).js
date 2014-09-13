@@ -1,20 +1,22 @@
 'use strict';
 (function(){
-
-  var <%= classedName %>Ctrl = function ($scope,  <%= cameledName %>) {
-    var vm = this;
-    vm.someMethod = someMethod;
-
-    //////////////
-
-    function someMethod(){
-      vm.stuff = 'stuff';
-    }
-  };
-  <%= classedName %>Ctrl
-    .$inject = ['$scope'];
-
   angular
     .module('<%= scriptAppName %>')
     .controller('<%= classedName %>Ctrl', <%= classedName %>Ctrl);
+
+  <%= classedName %>Ctrl
+    .$inject = ['$scope'];
+
+  function <%= classedName %>Ctrl($scope) {
+    var vm = this;
+    vm.name = '<%= name %>';
+    vm.value = 0;
+    vm.increment = increment;
+    //////////////
+
+    function increment(){
+      vm.value++;
+    }
+  };
+
 }).call(this);

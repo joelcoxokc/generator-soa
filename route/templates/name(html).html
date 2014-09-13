@@ -1,8 +1,5 @@
 <div class="col-md-12">
 This is the <%= name %> view.
-  <ul class="list-group">
-    <li class="list-group-item" ng-repeat="<%= name %> in vm.<%= name %>s">
-      {{<%= name %>}}
-    </li>
-  </ul>
+  <h1>{{vm.value}}</h1>
+  <button type="button" class="btn btn-info" ng-click="vm.increment()">Increment</button>
 </div>

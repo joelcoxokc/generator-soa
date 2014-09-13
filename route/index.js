@@ -30,7 +30,7 @@ Generator.prototype.askFor = function askFor() {
     {
       name: 'dir',
       message: 'Where would you like to create this route?',
-      default: 'client/app'
+      default: 'client/app/routes'
     },{
       name: 'route',
       message: 'What will the url of your route be?',

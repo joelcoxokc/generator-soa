@@ -1,5 +1,4 @@
 .col-md-12
     | This is the <%= name %> view.
-    ul.liist-group
-      li.list-group-item(ng-repeat="<%= name %> in vm.<%= name %>s")
-        p {{<%= name %>}}
+  h1 {{vm.value}}
+  button(type="button" class="btn btn-info" ng-click="vm.increment()") Increment

@@ -37,7 +37,7 @@ Generator.prototype.askFor = function askFor() {
     if(props.route.charAt(0) !== '/') {
       props.route = '/' + props.route;
     }
-
+    this.client_dir = props.client;
     this.route = props.route;
     done();
   }.bind(this));
@@ -69,8 +69,14 @@ Generator.prototype.registerEndpoint = function registerEndpoint() {
   }
 };
 
+Generator.prototype.generateModel = function(){
+  var args = Array.prototype.slice.call(this.arguments);
+  args.push('server', null)
+  this.composeWith('soa:model', {arguments: this.arguments}, {local:require.resolve('../model')});
+}
+
 Generator.prototype.createFiles = function createFiles() {
-  var dest = this.config.get('endpointDirectory') || 'server/api/' + this.name;
+  var dest ='servers/server/api/' + this.name;
   this.sourceRoot(path.join(__dirname, './templates'));
   ngUtil.processDirectory(this, '.', dest);
 };

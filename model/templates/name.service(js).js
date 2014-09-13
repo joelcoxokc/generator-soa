@@ -1,50 +1,9 @@
 'use strict';
 (function(){
-  <% if(filters.server && filters.restangular){ %>
-   var <%= classedName %>Provider = function(<% if(filters.restangular){ %>Restangular<% } else { %>$http<% } %>){
-      return Restangular.withConfig(function(RestangularConfigurer) {
-        RestangularConfigurer.setBaseUrl('http://localhost:<%= filters.serverPort %>/api');
-      });
-   };
-   <% } %>
-   var <%= classedName %> = function (<% if(filters.server){ %><%= cameledName %>Provider<% } %><% if(!filters.server){ %>Restangular<% } %>) {
-    <% if(filters.server && filters.restangular){ %>
-      return <%= cameledName %>Provider.service('<%= route %>');
-    <% } else if(filters.restangular) { %>
-      return Restangular.service('<%= route %>');
-    <% } else { %>
-      var serverUrl = 'http://localhost:<%= filters.serverPort %>/api/';
-    // <%= cameledName %> API here
-
-    return {
-      all: all,
-      find: find,
-      create: create,
-      update: update,
-      destroy: destroy
-    };
-
-    /////////////
-
-    function all() {
-      return $http.get(serverUrl);
-    }
-    function find(id){
-      return $http.get(serverUrl + id);
-    }
-    function create(data){
-      return $http.post(serverUrl, data);
-    }
-    function update(id, data){
-      return $http.put(serverUrl + id);
-    }
-    function destroy(id){
-      return $http.delete(serverUrl + id);
-    }
-
-    <% } %>
-  };
-<% if(filters.restangular){ %>
+  angular
+    .module('<%= scriptAppName %>')<% if(filters.server) { %>
+    .factory('<%= classedName %>Provider', <%= classedName %>Provider)<% } %>
+    .factory('<%= classedName %>', <%= classedName %>);
   <% if(filters.server) { %>
   <%= classedName %>
     .$inject = ['<%= classedName %>Provider'];
@@ -53,13 +12,19 @@
   <% if(!filters.server) { %>
   <%= classedName %>
     .$inject = ['Restangular'];<% } %>
-<% } else { %>
-  <%= classedName %>
-    .$inject = ['$http'];<% } %>
 
-  angular.module('<%= scriptAppName %>')
-  <% if(filters.server && filters.restangular) { %>
-    .factory('<%= classedName %>Provider', <%= classedName %>Provider)<% } %>
-    .factory('<%= classedName %>', <%= classedName %>);
+  <% if(filters.server){ %>
+  function <%= classedName %>Provider(<% if(filters.restangular){ %>Restangular<% } else { %>$http<% } %>){
+      return Restangular.withConfig(function(RestangularConfigurer) {
+        RestangularConfigurer.setBaseUrl('http://localhost:<%= filters.serverPort %>/api');
+      });
+   };
+   <% } %>
+  function <%= classedName %>(<% if(filters.server){ %><%= cameledName %>Provider<% } %><% if(!filters.server){ %>Restangular<% } %>) {
+    <% if(filters.server){ %>
+      return <%= cameledName %>Provider.service('<%= route %>');<% } %>
+    <% if(!filters.server) { %>
+      return Restangular.service('<%= route %>');<% } %>
+  };
 
 }).call(this);
