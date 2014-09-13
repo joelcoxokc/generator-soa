@@ -23,6 +23,9 @@ util.inherits(Generator, ScriptBase);
 Generator.prototype.askFor = function askFor() {
   var done = this.async();
   var name = this.name;
+  if (this.config.get('pluralizeRoutes') !== false) {
+    name = name + 's';
+  }
   var prompts = [
     {
       name: 'dir',
