@@ -47,8 +47,6 @@ Generator.prototype.askFor = function askFor() {
 Generator.prototype.createSocket = function createSocket() {
   if(this.filters.server){
     var args = Array.prototype.slice.call(this.arguments);
-    args.push(null)
-    args.push(this.filters.serverPort)
     args.push(this.dir)
     this.composeWith('soa:socket', {arguments: args}, {local:require.resolve('../socket')});
   }

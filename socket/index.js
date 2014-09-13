@@ -17,9 +17,10 @@ Generator.prototype.askFor = function askFor() {
   var prompts = [
     {
       name: 'dir',
-      message: 'Where would you like to create the client side model?',
+      message: 'Where would you like to create the client side socket?',
       default: this.arguments[3]
     }
+  ];
   this.prompt(prompts, function (props){
 
     if(this.arguments[1] === 'server') this.filters.server = true;
