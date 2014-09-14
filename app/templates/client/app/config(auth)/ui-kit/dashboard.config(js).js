@@ -27,7 +27,6 @@
             url: url,
             templateUrl: template
           });
-          console.log(url)
         };
       }
       function getPages(){

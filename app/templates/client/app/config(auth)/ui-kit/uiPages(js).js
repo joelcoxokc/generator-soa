@@ -3,30 +3,47 @@
   angular.module('<%= scriptAppName %>').factory('uiPages', [
     function() {
       var pages = {
-        charts: [
+        charts: {
+          icon: 'fa-bar-chart-o',
+          children :[
           'others',
           'flot',
           'morris'
-        ],
-        dashboard: [
+          ]
+        },
+        dashboard: {
+          icon: 'fa-dashboard',
+          children :[
           'dashboard'
-        ],
-        forms: [
+          ]
+        },
+        forms: {
+          icon: 'fa-pencil',
+          children :[
           'elements',
           'layouts',
           'validation',
           'wizard'
-        ],
-        mail: [
+          ]
+        },
+        mail: {
+          icon: 'fa-envelope-o',
+          children :[
           'compose',
           'inbox',
           'single'
-        ],
-        maps: [
-          'gmap',
-          'jqvmap'
-        ],
-        pages: [
+          ]
+        },
+        maps: {
+          icon: 'fa-map-marker',
+          children :[
+            'gmap',
+            'jqvmap'
+          ]
+        },
+        pages: {
+          icon: 'fa-file-text-o',
+          children :[
           '404',
           '500',
           'about',
@@ -40,16 +57,25 @@
           'services',
           'signin',
           'signup'
-        ],
-        tables: [
+         ]
+        },
+        tables: {
+          icon: 'fa-table',
+          children :[
           'dynamic',
           'responsive',
           'static'
-        ],
-        tasks: [
+         ]
+        },
+        tasks: {
+          icon: 'fa-map',
+          children :[
           'tasks'
-        ],
-        ui: [
+          ]
+        },
+        ui: {
+          icon: 'fa-magic',
+          children :[
           'buttons',
           'calendar',
           'components',
@@ -60,7 +86,8 @@
           'timeline',
           'typography',
           'widgets',
-        ]
+          ]
+        }
       }
       return {
         all: function() {
