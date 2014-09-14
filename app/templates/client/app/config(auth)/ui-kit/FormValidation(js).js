@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  angular.module('v3App').controller('wizardFormCtrl', [
+  angular.module('<%= scriptAppName %>').controller('wizardFormCtrl', [
     '$scope', function($scope) {
       $scope.wizard = {
         firstName: 'some name',

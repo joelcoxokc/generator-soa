@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  angular.module('v3App').directive('uiJqvmap', [
+  angular.module('<%= scriptAppName %>').directive('uiJqvmap', [
     function() {
       return {
         restrict: 'A',

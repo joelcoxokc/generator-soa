@@ -1,7 +1,7 @@
 'use strict';
 (function(){
   angular
-    .module('v3App')
+    .module('<%= scriptAppName %>')
     .config( dashboard )
     .controller('invoiceCtrl', ['$scope', '$window', controller])
     function controller($scope, $window){

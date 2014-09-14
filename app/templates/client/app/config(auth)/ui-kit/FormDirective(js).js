@@ -1,5 +1,5 @@
 (function() {
-  angular.module('v3App').directive('uiRangeSlider', [
+  angular.module('<%= scriptAppName %>').directive('uiRangeSlider', [
     function() {
       return {
         restrict: 'A',

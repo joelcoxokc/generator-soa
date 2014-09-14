@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  angular.module('v3App').controller('chartCtrl', [
+  angular.module('<%= scriptAppName %>').controller('chartCtrl', [
     '$scope', function($scope) {
       $scope.easypiechart = {
         percent: 65,

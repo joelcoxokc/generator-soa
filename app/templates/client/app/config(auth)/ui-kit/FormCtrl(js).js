@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  angular.module('v3App').controller('TagsDemoCtrl', [
+  angular.module('<%= scriptAppName %>').controller('TagsDemoCtrl', [
     '$scope', function($scope) {
       return $scope.tags = ['foo', 'bar'];
     }

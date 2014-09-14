@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  angular.module('v3App').controller('tableCtrl', [
+  angular.module('<%= scriptAppName %>').controller('tableCtrl', [
     '$scope', '$filter', function($scope, $filter) {
       var init;
       $scope.stores = [

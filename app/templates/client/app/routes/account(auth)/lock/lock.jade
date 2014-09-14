@@ -1,0 +1,14 @@
+div.page.page-lock
+    div.lock-centered.clearfix
+        div.lock-container
+            //- !-- div ui-time class="lock-time"div --
+            section.lock-box
+                div.lock-user {{getCurrentUser().name}}
+                div.lock-img
+                  img(src="assets/images/g1.jpg" alt="")
+                div.lock-pwd
+                    form
+                        div.form-group
+                            input.form-control(type="password" placeholder="Password")
+                            a.btn-submit(href="#/")
+                                i.fa.fa-arrow-right

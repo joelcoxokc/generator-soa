@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  angular.module('v3App').directive('gaugeChart', [
+  angular.module('<%= scriptAppName %>').directive('gaugeChart', [
     function() {
       return {
         restrict: 'A',
