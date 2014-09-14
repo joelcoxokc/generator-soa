@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Service: people', function () {
+describe('Service: authInterceptor', function () {
 
   // load the service's module
   beforeEach(module('<%= scriptAppName %>'));

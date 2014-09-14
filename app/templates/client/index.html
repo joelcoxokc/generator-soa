@@ -21,13 +21,31 @@
       <!-- endinjector -->
     <!-- endbuild -->
   </head>
-  <body ng-app="<%= scriptAppName %>">
+  <body data-ng-app="<%= scriptAppName %>" id="app" data-custom-background data-off-canvas-nav>
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <% if(filters.ngroute) { %><div ng-view=""></div><% } %><% if(filters.uirouter) { %><div ui-view=""></div><% } %>
+    <% if(filters.ngroute) { %><div ng-view=""></div><% } %>
+    <% if(filters.uirouter) { %>
+      <!-- <div ui-view=""></div> -->
+      <div data-ng-controller="AppCtrl">
+          <div data-ng-hide="isSpecificPage()"
+               data-ng-cloak
+               class="no-print">
+              <section data-ng-include=" 'app/views/header.html' "
+                   id="header" class="top-header"></section>
+
+              <aside data-ng-include=" 'app/views/nav.html' "
+                   id="nav-container"></aside>
+          </div>
+
+          <div class="view-container">
+              <section data-ui-view id="content" class="animate-fade-up"></section>
+          </div>
+      </div>
+    <% } %>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <script>
