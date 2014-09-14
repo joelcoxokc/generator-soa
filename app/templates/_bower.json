@@ -21,6 +21,7 @@
     "angular-animate": "~1.2.0",
     "bootstrap-file": "https://github.com/joelcoxokc/bootstrap-file.git",
     "toastr": "~2.0.1",
+    "morris.js": "~0.5.0",
     "jquery-ui": "*",
     "holderjs": "~2.3.1",
     "seiyria-bootstrap-slider": "~1.9.0",
