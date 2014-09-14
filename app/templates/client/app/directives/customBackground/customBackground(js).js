@@ -24,11 +24,11 @@
                 return $element.addClass('body-home');
               case '/404':
               case '/pages/500':
-              case '/pages/signin':
-              case '/pages/signup':
+              case '/login':
+              case '/signup':
               case '/pages/forgot':
                 return $element.addClass('body-special');
-              case '/pages/lock-screen':
+              case '/lock-screen':
                 return $element.addClass('body-special body-lock');
               case '/tasks':
                 return $element.addClass('body-tasks');

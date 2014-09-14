@@ -18,6 +18,7 @@
     <!-- build:css({.tmp,client}) app/app.css -->
     <link rel="stylesheet" href="app/app.css">
       <!-- injector:css -->
+    <link rel="stylesheet" href="app/dashboard.css">
       <!-- endinjector -->
     <!-- endbuild -->
   </head>
@@ -29,22 +30,22 @@
     <!-- Add your site or application content here -->
     <% if(filters.ngroute) { %><div ng-view=""></div><% } %>
     <% if(filters.uirouter) { %>
-      <!-- <div ui-view=""></div> -->
-      <div data-ng-controller="AppCtrl">
-          <div data-ng-hide="isSpecificPage()"
-               data-ng-cloak
-               class="no-print">
-              <section data-ng-include=" 'app/views/header.html' "
-                   id="header" class="top-header"></section>
+    <!-- <div ui-view=""></div> -->
+    <div data-ng-controller="AppCtrl">
+        <div data-ng-hide="isSpecificPage()"
+             data-ng-cloak
+             class="no-print">
+            <section data-ng-include=" 'app/views/header.html' "
+                 id="header" class="top-header"></section>
 
-              <aside data-ng-include=" 'app/views/nav.html' "
-                   id="nav-container"></aside>
-          </div>
+            <aside data-ng-include=" 'app/views/nav.html' "
+                 id="nav-container"></aside>
+        </div>
 
-          <div class="view-container">
-              <section data-ui-view id="content" class="animate-fade-up"></section>
-          </div>
-      </div>
+        <div class="view-container">
+            <section data-ui-view id="content" class="animate-fade-up"></section>
+        </div>
+    </div>
     <% } %>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->

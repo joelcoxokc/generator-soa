@@ -25,6 +25,12 @@
         templateUrl: 'app/routes/account/settings/settings.html',
         controller: 'SettingsCtrl as vm',
         authenticate: true
+      })
+      .state('lock-screen', {
+        url: '/lock-screen',
+        templateUrl: 'app/routes/account/lock/lock.html',
+        controller: 'LockCtrl as vm',
+        authenticate: true
       });
   };
 }).call(this);
