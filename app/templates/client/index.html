@@ -7,19 +7,21 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <base href="/">
-    <title></title>
+    <title><%= scriptAppName %></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css(client) app/vendor.css -->
-      <!-- bower:css -->
-      <!-- endbower -->
+
+    <!-- BOWER STYLES -->
+    <!-- bower:css -->
+    <!-- endbower -->
     <!-- endbuild -->
-    <!-- build:css({.tmp,client}) app/app.css -->
-    <link rel="stylesheet" href="app/app.css">
-      <!-- injector:css -->
-      <!-- endinjector -->
-    <!-- endbuild -->
+
+
+    <!-- APP STYLES -->
+    <!-- styles:css -->
+    <!-- endinject -->
+
   </head>
   <body ng-app="<%= scriptAppName %>">
     <!--[if lt IE 7]>
@@ -27,7 +29,7 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <% if(filters.ngroute) { %><div ng-view=""></div><% } %><% if(filters.uirouter) { %><div ui-view=""></div><% } %>
+    <div ui-view=""></div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <script>
@@ -44,16 +46,29 @@
     <script src="bower_components/es5-shim/es5-shim.js"></script>
     <script src="bower_components/json3/lib/json3.min.js"></script>
     <![endif]-->
-    <!-- build:js({client,node_modules}) app/vendor.js -->
-      <!-- bower:js -->
-      <!-- endbower --><% if(filters.socketio) { %>
-      <script src="socket.io-client/socket.io.js"></script><% } %>
+
+    <!-- BOWER SCRIPTS -->
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <!-- endbower -->
     <!-- endbuild -->
 
-        <!-- build:js({.tmp,client}) app/app.js -->
-        <script src="app/app.js"></script>
-          <!-- injector:js -->
-          <!-- endinjector -->
-        <!-- endbuild -->
+
+    <!-- VENDOR SCRIPTS -->
+    <!-- vendor:js -->
+    <!-- endinject -->
+
+    <!-- APP SCRIPTS -->
+    <!-- root:js -->
+    <!-- endinject -->
+
+    <!-- APP MODULES -->
+    <!-- modules:js -->
+    <!-- endinject -->
+
+    <!-- APP TEMPLATES -->
+    <!-- templates:js -->
+    <!-- endinject -->
+
 </body>
 </html>
