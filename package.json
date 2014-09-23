@@ -1,7 +1,7 @@
 {
-  "name": "generator-soa-base",
-  "version": "0.0.2",
-  "description": "Yeoman generator for creating MEAN stack applications, using MongoDB, Express, AngularJS, and Node",
+  "name": "generator-soa",
+  "version": "1.1.2",
+  "description": "Yeoman generator for creating fullstack applications Using GULP MongoDB | PostgreSql | NEO4J, Express | Sails, & AngularJS",
   "keywords": [
     "yeoman-generator",
     "mean",
@@ -70,5 +70,8 @@
     "npm": ">=1.4.*"
   },
   "main": "Gruntfile.js",
-  "license": "ISC"
+  "license": "ISC",
+  "directories": {
+    "test": "test"
+  }
 }
