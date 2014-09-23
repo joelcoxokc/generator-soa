@@ -1,29 +1,27 @@
-<!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<!DOCTYPE html>
+<html>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <base href="/">
-    <title><%= scriptAppName %></title>
+    <title>baseApp</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-    <!-- BOWER STYLES -->
-    <!-- bower:css -->
-    <!-- endbower -->
-    <!-- endbuild -->
+<!-- HEAD -->
+<!-- build:css -->
+<!-- bower:css -->
+<!-- endbower -->
+<!-- endbuild -->
 
 
-    <!-- APP STYLES -->
-    <!-- styles:css -->
-    <!-- endinject -->
+<!-- styles:css -->
+<!-- endinject -->
+<!-- END:HEAD -->
 
   </head>
-  <body ng-app="<%= scriptAppName %>">
+  <body ng-app="baseApp">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -42,33 +40,31 @@
       ga('send', 'pageview');
     </script>
 
-    <!--[if lt IE 9]>
-    <script src="bower_components/es5-shim/es5-shim.js"></script>
-    <script src="bower_components/json3/lib/json3.min.js"></script>
-    <![endif]-->
+      <!--[if lt IE 9]>
+      <script src="bower_components/es5-shim/es5-shim.js"></script>
+      <script src="bower_components/json3/lib/json3.min.js"></script>
+      <![endif]-->
 
-    <!-- BOWER SCRIPTS -->
-    <!-- build:js scripts/vendor.js -->
-    <!-- bower:js -->
-    <!-- endbower -->
-    <!-- endbuild -->
+<!-- BODY -->
+<!-- build:js -->
+<!-- bower:js -->
+<!-- endbower -->
+<!-- endbuild -->
+
+<!-- vendor:js -->
+<!-- endinject -->
+<script src="socket.io-client/socket.io.js"></script>
+
+<!-- root:js -->
+<!-- endinject -->
+
+<!-- bundle:js -->
+<!-- endinject -->
+
+<!-- templates:js -->
+<!-- endinject -->
+<!-- END:BODY -->
 
 
-    <!-- VENDOR SCRIPTS -->
-    <!-- vendor:js -->
-    <!-- endinject -->
-
-    <!-- APP SCRIPTS -->
-    <!-- root:js -->
-    <!-- endinject -->
-
-    <!-- APP MODULES -->
-    <!-- modules:js -->
-    <!-- endinject -->
-
-    <!-- APP TEMPLATES -->
-    <!-- templates:js -->
-    <!-- endinject -->
-
-</body>
+    </body>
 </html>

@@ -1,6 +1,8 @@
 'use strict'
 
 angular.module '<%= scriptAppName %>', [<%= angularModules %>]
+.constant('serverBaseUrl', 'http://localhost:9000')
+.constant('serverUrl', 'http://localhost:9000/api/')
 <% if(filters.ngroute) { %>.config ($routeProvider, $locationProvider<% if(filters.auth) { %>, $httpProvider<% } %>) ->
   $routeProvider
   .otherwise

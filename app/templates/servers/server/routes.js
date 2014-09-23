@@ -5,9 +5,9 @@
 'use strict';
 
 var errors = require('./components/errors');
-
+var cors = require('cors')
 module.exports = function(app) {
-
+  app.use(cors());
   // Insert routes below
   app.use('/api/things', require('./api/thing'));
   <% if (filters.auth) { %>app.use('/api/users', require('./api/user'));

@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module '<%= scriptAppName %>'
-.factory 'Auth', ($location, $rootScope, $http, User, $cookieStore, $q) ->
+.factory 'Auth', (serverBaseUrl, $location, $rootScope, $http, User, $cookieStore, $q) ->
   currentUser = if $cookieStore.get 'token' then User.get() else {}
 
   ###
@@ -13,7 +13,7 @@ angular.module '<%= scriptAppName %>'
   ###
   login: (user, callback) ->
     deferred = $q.defer()
-    $http.post '/auth/local',
+    $http.post serverBaseUrl+'/auth/local',
       email: user.email
       password: user.password
 

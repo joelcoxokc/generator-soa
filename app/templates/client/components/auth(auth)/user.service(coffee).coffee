@@ -1,8 +1,8 @@
 'use strict'
 
 angular.module '<%= scriptAppName %>'
-.factory 'User', ($resource) ->
-  $resource '/api/users/:id/:controller',
+.factory 'User', ($resource, serverUrl) ->
+  $resource serverUrl+'users/:id/:controller',
     id: '@_id'
   ,
     changePassword:

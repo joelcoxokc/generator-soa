@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('<%= scriptAppName %>')
-  .factory('User', function ($resource) {
-    return $resource('/api/users/:id/:controller', {
+  .factory('User', function ($resource, serverUrl) {
+    return $resource(serverUrl+'users/:id/:controller', {
       id: '@_id'
     },
     {
