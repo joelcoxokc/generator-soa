@@ -4,8 +4,6 @@
 
 ## Example project
 
-Generated with defaults: http://fullstack-demo.herokuapp.com/.
-
 Source code: https://github.com/JoelCoxOKC/angular-soa-seed
 
 ## Usage
