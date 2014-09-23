@@ -1,4 +1,4 @@
-# AngularJS Full-Stack generator Using Gulp [![Build Status](https://travis-ci.org/DaftMonk/generator-angular-fullstack.svg?branch=master)](http://travis-ci.org/DaftMonk/generator-angular-fullstack)
+# Gulp AngularJS Full-Stack generator [![Build Status](https://travis-ci.org/DaftMonk/generator-angular-fullstack.svg?branch=master)](http://travis-ci.org/DaftMonk/generator-angular-fullstack)
 
 > Yeoman generator for creating Service Oriented Applications using a multitude of technologies!!
 
