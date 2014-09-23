@@ -10,18 +10,27 @@ var config = {
   module_name: '<%= scriptAppName %>',
   client: {
     path: './client/',
+    <% if(filters.coffee){ %>
+    specs: ['./client/app/app.coffee', './client/{app,components}/**/*.coffee', './client/{app,components}/**/*.spec.coffee', './client/{app,components}/**/*.html'],
+    scripts: {
+      root: './client/app/app.coffee',
+      modules: ['./client/{app,components}/**/*.coffee','!./client/{app,components}/**/*.spec.coffee', '!./client/app/app.coffee'],
+      all: ['./client/{app,components}/**/*.coffee', '!./client/{app,components}/**/*.spec.coffee'],
+    <% } %>
+    <% if(filters.js){ %>
     specs: ['./client/app/app.js', './client/{app,components}/**/*.js', './client/{app,components}/**/*.spec.js', './client/{app,components}/**/*.html'],
     scripts: {
-      <% if(filters.coffee){ %>root: 'client/app/app.coffee',
-      modules: ['client/{app,components}/**/*.coffee','!client/{app,components}/**/*.spec.coffee', '!client/app/app.coffee'],<% } %>
-      <% if(filters.js){ %>root: 'client/app/app.js',
-      modules: ['client/{app,components}/**/*.js', '!client/app/app.js', '!client/{app,components}/**/*.spec.js'],<% } %>
+      root: './client/app/app.js',
+      modules: ['./client/{app,components}/**/*.js','!./client/{app,components}/**/*.spec.js', '!./client/app/app.js'],
+      all: ['./client/{app,components}/**/*.js', '!./client/{app,components}/**/*.spec.js'],
+    <% } %>
+
     },
     styles: {
-      <% if(filters.sass){ %>sass: ['client/styles/**/*.scss'],<% } %>
-      <% if(filters.less){ %>less: ['client/styles/**/*.less'],<% } %>
-      <% if(filters.css){ %>css: ['client/styles/**/*.css'],<% } %>
-      <% if(filters.stylus){ %>stylus: ['client/styles/**/*.styl']<% } %>
+      stylus: './client/styles/app.styl',
+      less: './client/styles/app.less',
+      sass: './client/styles/app.scss',
+      css: ['./client/styles/**/*.css'],
     },
     index: './client/index.html',
     templates:{
@@ -37,8 +46,8 @@ var config = {
     stylePath: './.tmp/styles/',
     styles: './.tmp/styles/*.css',
     scriptPath: './.tmp/scripts/',
-    scripts: './.tmp/scripts/*.js',
-    templatesPath: './.tmp/templates/',
+    scripts: ['./tmp/app/app.js', './.tmp/{app,components}/**/*.js'],
+    templatePath: './.tmp/templates/',
     templates: './.tmp/templates/*.js',
     dist: './dist/public',
     images: './.tmp/images/**/*',

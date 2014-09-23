@@ -12,7 +12,6 @@ var util        = require('util');
 var browserSync = require('browser-sync');
 var del         = require('del');
 var karma       = require('karma').server;
-
 var mainBowerFiles = require('main-bower-files');
 var reload      = browserSync.reload;
 // GULP PATHS
@@ -48,18 +47,29 @@ var AUTOPREFIXER_BROWSERS = [
 /*
  | Default
  */
-gulp.task('default', ['clean', 'remove:inject'], function (cb) {
+gulp.task('default', ['clean'], function (cb) {
 
-  g.runSequence('styles', ['copy','build:scripts', 'compile:templates','images', 'inject'],   cb);
+  g.runSequence('copy', 'images', ['build'],'inject', cb);
 });
-
-
 
 /*
  |  SERVER
  */
 gulp.task('server', ['serve']);
-gulp.task('serve',['styles', 'inject:client', 'run:servers'], function () {
+gulp.task('serve',['clean'], function (done) {
+  g.runSequence(['build', 'run:servers'], 'browserSync', done);
+});
+
+/*
+ | CLEAN and remove the .tmp directory
+ */
+gulp.task('clean',['remove:inject'], del.bind(null, ['./.tmp', './dist']));
+
+
+/*
+ | Browser Sync Server for Dev Environment
+ */
+gulp.task('browserSync', function(){
   browserSync({
     notify: false,
     // https: true,
@@ -70,67 +80,141 @@ gulp.task('serve',['styles', 'inject:client', 'run:servers'], function () {
       namespace: '/socket.io-client'
     }
   });
-  gulp.watch(client.templates.html, reload);
-  gulp.watch(client.styles.css, ['styles', reload]);
-  gulp.watch([client.scripts.root].concat(client.scripts.modules), ['jshint']);
+  gulp.watch(client.templates.jade, reload);
+  <% if(filters.sass){ %>gulp.watch(client.styles.sass, ['styles', reload]);<% } %>
+  <% if(filters.css){ %>gulp.watch(client.styles.css, ['styles', reload]);<% } %>
+  <% if(filters.less){ %>gulp.watch(client.styles.less, ['styles', reload]);<% } %>
+  gulp.watch(client.scripts.all, ['scripts']);
   gulp.watch(client.images, reload);
 });
-// Build and serve the output from the dist build
-gulp.task('serve:dist', ['default','run:servers'], function () {
-  browserSync({
-    notify: false,
-    // https: true,
-    server: 'dist'
-  });
-});
 
+/*
+ | Run all servers in the servers folder
+ */
 gulp.task('run:servers', function(){
+
   runServers.base();
 });
 
+/*
+ | Browser Sync Server For Production Environment
+ */
+gulp.task('dist', ['default','run:servers'], function () {
+  browserSync({
+    notify: false,
+    // https: true,
+    server: './dist',
+    socket: {
+      path: '/socket.io-client',
+      clientPath: '/socket.io-client',
+      namespace: '/socket.io-client'
+    }
+  });
+});
+
+/*
+ | Gulp Karma Test
+ */
 gulp.task('test', ['karma:inject:bower', 'serve'], function ( done ){
+
   karma.start({
     configFile: __dirname + '/karma.conf.js'
   }, done);
 });
 
 /*
- | CLEAN and remove the .tmp directory
- */
-gulp.task('clean',['remove:inject'], del.bind(null, ['./.tmp', './dist']));
-
-/*
  |  JSHINT on client side scripts, but leaving them in there place;
  */
-gulp.task('jshint', function () {
-  return gulp.src(client.scripts.root, client.scripts.modules)
-    .pipe(reload({stream: true, once: true}))
-    .pipe( g.jshint())
+gulp.task('scripts', function(){
+  return gulp.src(client.scripts.all)
+    .pipe( reload({stream: true, once: true}) )
+    <% if(filters.coffee){ %>.pipe( g.coffee() )<% } %>
+    .pipe( g.jshint() )
     .pipe( g.jshint.reporter('jshint-stylish'))
-    .pipe( g.if(!browserSync.active, g.jshint.reporter('fail')));
+    .pipe( gulp.dest( tmp.path ) )
+    .pipe( g.concat(config.app_file_name) )
+    .pipe( g.ngAnnotate({
+      // true helps add where @ngInject is not used. It infers.
+      // Doesn't work with resolve, so we must be explicit there
+      add: true
+    }))
+    .pipe( g.uglify() )
+    .pipe( gulp.dest( dist.scriptPath ) )<% if(filters.js){ %>
+    .pipe( g.if(!browserSync.active, g.jshint.reporter('fail')));<% } %>
 });
 
+/*
+ | Compile all styles
+ */
 gulp.task('styles', function () {
   // For best performance, don't add Sass partials to `gulp.src`
+  <% if(filters.sass){ %>return gulp.src( client.styles.sass )
+    .pipe( g.changed('styles', {extension: '.scss'} ) )
+    .pipe( g.rubySass({
+      style: 'expanded',
+  //   //   // precision: 10,
+      compass: true
+    }))<% } %><% if(filters.css){ %>
   return gulp.src( client.styles.css )
-    .pipe( g.changed('styles', {extension: '.css'} ) )
+    .pipe( g.changed('styles', {extension: '.css'} ) )<% } %><% if(filters.less){ %>
+  return gulp.src( client.styles.less )
+    .pipe( g.changed('styles', {extension: '.less'} ) )
+    .pipe( g.less() )<% } %><% if(filters.stylus){ %>
+  return gulp.src( client.styles.stylus )
+    .pipe( g.changed('styles', {extension: '.styl'} ) )
+    .pipe( g.stylus())<% } %>
     .on( 'error', console.error.bind( console ) )
     .pipe( g.autoprefixer( {browsers: AUTOPREFIXER_BROWSERS} ) )
-    .pipe( gulp.dest( tmp.stylePath ) )
-    // Concatenate And Minify Styles
     .pipe( g.concat( config.css_file_name ) )
-    .pipe( g.if('*.css', g.csso() ) )
+    .pipe( gulp.dest( tmp.stylePath ) )<% if(!filters.sass){ %>
+    .pipe( g.if('*.css', g.csso() ) )<% } %>
     .pipe( gulp.dest( dist.stylePath ) )
-    .pipe( g.size( {title: 'styles'} ) );
 });
 
-gulp.task('inject:client',['inject:bower'], function(){
+/*
+ | COMPILE JADE and place them into the .tmp directory
+ */
+gulp.task('compile:jade', function(){
+  return gulp.src( client.templates.jade )
+    .pipe( g.jade() )
+    .pipe( g.angularTemplatecache( config.jade_file_name, { module: config.module_name }))
+    .pipe( gulp.dest( tmp.templatePath ))
+    .pipe( g.uglify() )
+    .pipe( gulp.dest( dist.templatePath ) );
+});
+
+/*
+ | COMPILE JADE and place them into the .tmp directory
+ */
+gulp.task('compile:html', function(){
+  return gulp.src( client.templates.html )
+    .pipe( g.angularTemplatecache( config.html_file_name, { module: config.module_name } ) )
+    .pipe( gulp.dest( tmp.templatePath ) )
+    .pipe( g.uglify() )
+    .pipe( gulp.dest( dist.templatePath ) );
+});
+
+/*
+ | COMPILE Both jade and html templates into the .tmp/templates
+ */
+gulp.task('compile:templates', function (done){
+  g.runSequence([
+    'compile:jade',
+    'compile:html'
+  ], done)
+});
+
+/*
+ | Run Scripts before injecting into client;
+ */
+gulp.task('build',['styles', 'scripts','compile:templates', 'inject:bower'], function(){
 
   return buildServerInjector();
 });
 
+
 /*
- |  INJECT BOWER DEPENDENCIES with wiredep
+ |  INJECT BOWER DEPENDENCIES with wiredep into client/index.html
  */
 gulp.task('inject:bower', function () {
 
@@ -166,9 +250,9 @@ gulp.task('remove:inject', function(){
     .pipe( gulp.dest( client.path ) );
 });
 
-
-
-
+/* DIST
+ | MINIFY IMAGES for dist
+ */
 gulp.task('images', function () {
   return gulp.src(client.images)
     .pipe( g.cache( g.imagemin({
@@ -179,6 +263,9 @@ gulp.task('images', function () {
     .pipe( g.size( {title: 'images'} ));
 });
 
+/* DIST
+ | Copy All files for dist
+ */
 gulp.task('copy', function () {
   return gulp.src([
     client.path + '*.*',
@@ -189,72 +276,7 @@ gulp.task('copy', function () {
     .pipe( g.size( {title: 'copy'} ) );
 });
 
-
-
-/*
- | COMPILE Both jade and html templates into the .tmp/templates
- */
-gulp.task('compile:templates', function (done){
-  g.runSequence([
-    'compile:jade',
-    'compile:html'
-  ], done)
-});
-
-/*
- | COMPILE JADE and place them into the .tmp directory
- */
-gulp.task('compile:jade', function(){
-  return gulp.src( client.templates.jade )
-    .pipe( g.jade() )
-    .pipe( g.angularTemplatecache( config.jade_file_name, { module: config.module_name }))
-    .pipe( gulp.dest( dist.templatePath ))
-    .pipe( g.livereload() );
-});
-
-/*
- | COMPILE JADE and place them into the .tmp directory
- */
-gulp.task('compile:html', function(){
-  return gulp.src( client.templates.html )
-    .pipe( g.angularTemplatecache( config.html_file_name, { module: config.module_name } ) )
-    .pipe( gulp.dest( dist.templatePath ) )
-    .pipe( g.livereload() );
-});
-
-
-/*
- | CLEAN and remove the dist directory
- */
-gulp.task('build:scripts', ['scripts:root', 'scripts:bundle', 'scripts:vendor']);
-
-gulp.task('scripts:root', function(){
-  return gulp.src(client.scripts.root)
-    .pipe( g.jshint())
-      .on('error', errorHandler.onWarning )
-    .pipe( g.jshint.reporter('default') )
-    .pipe( g.ngAnnotate() )
-    .pipe( g.rename(config.app_file_name ) )
-    .pipe( gulp.dest( dist.scriptPath ) );
-});
-gulp.task('scripts:bundle', function(){
-  return gulp.src( client.scripts.modules )
-    .pipe( g.jshint() )
-      .on('error', errorHandler.onWarning )
-    .pipe( g.jshint.reporter('default') )
-    .pipe( g.ngAnnotate() )
-    .pipe( g.concat( config.modules_file_name ) )
-    .pipe( g.uglify() )
-    .pipe( gulp.dest( dist.scriptPath ) )
-});
-gulp.task('scripts:vendor', function(){
-  return gulp.src( client.vendor )
-    .pipe( g.concat( config.vendor_file_name ) )
-    .pipe( g.uglify() )
-    .pipe( gulp.dest( dist.scriptPath ) );
-});
-
-/*
+/*  DIST
  |  BUILD BOWER copy all bower files to the dist/bower_components directory
  |            - inject all bower scripts and styles into index.html
  */
@@ -272,6 +294,24 @@ gulp.task('dist:bower:files', function(){
 
   return g.bower( client.bower )
     .pipe( gulp.dest( dist.bower ) )
+});
+
+/*
+ |  DIST INJECT BOWER inject all bower scripts and styles into index.html
+ */
+gulp.task('dist:inject:bower',['dist:bower:files'], function(){
+  var wiredep = require('wiredep').stream;
+  return gulp.src( dist.index )
+    .pipe(wiredep({
+      directory: dist.bower,
+      exclude: ['bootstrap-sass-official']
+    }))
+  .pipe( gulp.dest( dist.path ) );
+});
+
+gulp.task('inject',['dist:inject:bower'], function (){
+
+  return buildDistInjector();
 });
 
 
@@ -306,114 +346,18 @@ gulp.task('karma:inject:bower', function(){
 });
 
 /*
- |  DIST INJECT BOWER inject all bower scripts and styles into index.html
- */
-gulp.task('dist:inject:bower',['dist:bower:files'], function(){
-  var wiredep = require('wiredep').stream;
-  return gulp.src( dist.index )
-    .pipe(wiredep({
-      directory: dist.bower,
-      exclude: ['bootstrap-sass-official']
-    }))
-  .pipe( gulp.dest( dist.path ) );
-});
-
-gulp.task('inject',['dist:inject:bower'], function (){
-
-  return buildDistInjector();
-});
-
-/*
- |  INJECT STYLES  (Only used when a new file is added during gulp.watch)
- */
-gulp.task('inject:styles', function(){
-  var index = gulp.src( client.index );
-  var styles = gulp.src([client.styles.css], { read: false } );
-  return index
-    .pipe( g.inject( styles, { name:'styles', addRootSlash: false, relative:true }))
-    .pipe( gulp.dest( client.path ) );
-});
-
-/*
- |  INJECT SCRIPTS  (Only used when a new file is added during gulp.watch)
- */
-gulp.task('inject:scripts',[
-  'jshint:scripts'],
-  function(){
-    var target = gulp.src( client.index );
-    var bundle = gulp.src( client.scripts.modules, {read: false} );
-    return target
-      .pipe(g.inject(bundle, {
-          addRootSlash: false,
-          relative: true,
-          name: 'bundle',
-        }))
-      .pipe( gulp.dest( client.path ) )
-  }
-);
-
-
-/*
- |  INJECT TEMPLATES  (Only used when a new file is added during gulp.watch)
- */
-gulp.task('inject:templates', function(){
-  var target = gulp.src( client.index );
-  var templates = gulp.src( tmp.templates, {read: false} );
-  return target
-    .pipe(g.inject(templates, {
-      addRootSlash: true,
-      name: 'templates',
-      ignorePath: '.tmp'
-    })).pipe(gulp.dest( client.path ));
-});
-
-
-/*
- |  INJECT VENDORS  (Only used when a new file is added during gulp.watch)
- */
-gulp.task('inject:vendor', function(){
-  var target = gulp.src( client.index );
-  var vendor = gulp.src( client.vendor, {read: false} );
-  return target
-    .pipe( g.inject( bundle, {
-        addRootSlash: false,
-        relative: true,
-        name: 'vendor',
-    } ) )
-    .pipe( gulp.dest( client.path ) );
-});
-
-
-/*
- | Notify the console during live reload with the files name
- */
-function notifyLiveReload(event){
-  console.log('File ' + event.path + ' was ' + event.type + ', reloading...');
-  gulp.src(event.path, { read:false })
-    .pipe( g.livereload( ) );
-}
-
-/*
  | INJECT all scritps into index.html;
  */
 function injector(options){
   return options.target
     .pipe( g.inject(options.styles.src, options.styles.params) )
     .pipe( g.inject(options.vendor.src, options.vendor.params) )
-    .pipe( g.inject(options.root.src, options.root.params) )
-    .pipe( g.inject(options.bundle.src, options.bundle.params) )
-    // .pipe( g.inject(options.templates.src, options.templates.params) )
-    .pipe( gulp.dest( options.dest ) );
-}
-function injectorDist(options){
-  return options.target
-    .pipe( g.inject(options.styles.src, options.styles.params) )
-    .pipe( g.inject(options.vendor.src, options.vendor.params) )
-    .pipe( g.inject(options.root.src, options.root.params) )
+    // .pipe( g.inject(options.root.src, options.root.params) )
     .pipe( g.inject(options.bundle.src, options.bundle.params) )
     .pipe( g.inject(options.templates.src, options.templates.params) )
-    .pipe( gulp.dest( dist.path ) );
+    .pipe( gulp.dest( options.dest ) );
 }
+
 
 /*
  | BUILD INJECTOR PARAMS for gulp server then call injector()
@@ -423,20 +367,16 @@ function buildServerInjector(){
       target: gulp.src( client.index ),
       dest: client.path,
       styles: {
-        src: gulp.src( client.styles.css, {read:false}),
-        params: {addRootSlash:false, relative:true, name:'styles'}
+        src: gulp.src( tmp.styles, {read:false}),
+        params: {addRootSlash:true, ignorePath: '.tmp', name:'styles'}
       },
       vendor: {
         src: gulp.src( client.vendor, {read:false}),
         params: {addRootSlash:false, relative:true, name:'vendor'}
       },
-      root: {
-        src: gulp.src( client.scripts.root, {read:false}),
-        params: {addRootSlash:false, relative:true, name:'root'}
-      },
       bundle:{
-        src: gulp.src( client.scripts.modules, {read:false}),
-        params: {addRootSlash:false, relative:true, name:'bundle'}
+        src: gulp.src( tmp.scripts, {read:false}),
+        params: {addRootSlash:true, ignorePath: '.tmp', name:'bundle'}
       },
       templates: {
         src: gulp.src( tmp.templates, {read:false}),
@@ -446,6 +386,16 @@ function buildServerInjector(){
     return injector(options);
 }
 
+
+function injectorDist(options){
+  return options.target
+    .pipe( g.inject(options.styles.src, options.styles.params) )
+    .pipe( g.inject(options.vendor.src, options.vendor.params) )
+    .pipe( g.inject(options.root.src, options.root.params) )
+    .pipe( g.inject(options.bundle.src, options.bundle.params) )
+    .pipe( g.inject(options.templates.src, options.templates.params) )
+    .pipe( gulp.dest( dist.path ) );
+}
 /*
  | BUILD INJECTOR PARAMS for gulp server then call injector()
  */
@@ -476,3 +426,36 @@ function buildDistInjector(){
     }
     return injectorDist(options);
 }
+
+
+
+/*
+ | CLEAN and remove the dist directory
+ */
+gulp.task('build:scripts', ['scripts:root', 'scripts:bundle', 'scripts:vendor']);
+
+gulp.task('scripts:root', function(){
+  return gulp.src(client.scripts.root)
+    .pipe( g.jshint())
+      .on('error', errorHandler.onWarning )
+    .pipe( g.jshint.reporter('default') )
+    .pipe( g.ngAnnotate() )
+    .pipe( g.rename(config.app_file_name ) )
+    .pipe( gulp.dest( dist.scriptPath ) );
+});
+gulp.task('scripts:bundle', function(){
+  return gulp.src( client.scripts.modules )
+    .pipe( g.jshint() )
+      .on('error', errorHandler.onWarning )
+    .pipe( g.jshint.reporter('default') )
+    .pipe( g.ngAnnotate() )
+    .pipe( g.concat( config.modules_file_name ) )
+    .pipe( g.uglify() )
+    .pipe( gulp.dest( dist.scriptPath ) )
+});
+gulp.task('scripts:vendor', function(){
+  return gulp.src( client.vendor )
+    .pipe( g.concat( config.vendor_file_name ) )
+    .pipe( g.uglify() )
+    .pipe( gulp.dest( dist.scriptPath ) );
+});
