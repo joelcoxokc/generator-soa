@@ -6,13 +6,13 @@
 
 Generated with defaults: http://fullstack-demo.herokuapp.com/.
 
-Source code: https://github.com/DaftMonk/fullstack-demo
+Source code: https://github.com/JoelCoxOKC/angular-soa-seed
 
 ## Usage
 
-Install `generator-angular-fullstack`:
+Install `generator-soa`:
 ```
-npm install -g generator-angular-fullstack
+npm install -g generator-soa
 ```
 
 Make a new directory, and `cd` into it:
@@ -20,12 +20,12 @@ Make a new directory, and `cd` into it:
 mkdir my-new-project && cd $_
 ```
 
-Run `yo angular-fullstack`, optionally passing an app name:
+Run `yo soa`, optionally passing an app name:
 ```
-yo angular-fullstack [app-name]
+yo soa [app-name]
 ```
 
-Run `grunt` for building, `grunt serve` for preview, and `grunt serve:dist` for a preview of the built app.
+Run `gulp` for building, `gulp serve` for preview, and `gulp dist` for a preview of the built app.
 
 ## Prerequisites
 
@@ -43,13 +43,14 @@ Run `grunt` for building, `grunt serve` for preview, and `grunt serve:dist` for 
 **Server**
 
 * Database: `None`, `MongoDB`
+* Database: coming soon - `PostgreSql`, `MySql`,`Neo4J`
 * Authentication boilerplate: `Yes`, `No`
 * oAuth integrations: `Facebook` `Twitter` `Google`
 * Socket.io integration: `Yes`, `No`
 
 ## Injection
 
-A grunt task looks for new files in your `client/app` and `client/components` folder and automatically injects them in the appropriate places based on an injection block.
+A gulp task looks for new files in your `client/app` and `client/components` folder and automatically injects them in the appropriate places based on an injection block.
 
 * `less` files into `client/app.less`
 * `scss` files into `client/app.scss`
@@ -63,28 +64,28 @@ A grunt task looks for new files in your `client/app` and `client/components` fo
 Available generators:
 
 * App
-    - [angular-fullstack](#app) (aka [angular-fullstack:app](#app))
+    - [soa](#app) (aka [soa:app](#app))
 * Server Side
-    - [angular-fullstack:endpoint](#endpoint)
+    - [soa:endpoint](#endpoint)
 * Client Side
-    - [angular-fullstack:route](#route)
-    - [angular-fullstack:controller](#controller)
-    - [angular-fullstack:filter](#filter)
-    - [angular-fullstack:directive](#directive)
-    - [angular-fullstack:service](#service)
-    - [angular-fullstack:provider](#service)
-    - [angular-fullstack:factory](#service)
-    - [angular-fullstack:decorator](#decorator)
+    - [soa:route](#route)
+    - [soa:controller](#controller)
+    - [soa:filter](#filter)
+    - [soa:directive](#directive)
+    - [soa:service](#service)
+    - [soa:provider](#service)
+    - [soa:factory](#service)
+    - [soa:decorator](#decorator)
 * Deployment
-    - [angular-fullstack:openshift](#openshift)
-    - [angular-fullstack:heroku](#heroku)
+    - [soa:openshift](#openshift)
+    - [soa:heroku](#heroku)
 
 ### App
 Sets up a new AngularJS + Express app, generating all the boilerplate you need to get started.
 
 Example:
 ```bash
-yo angular-fullstack
+yo soa
 ```
 
 ### Endpoint
@@ -93,24 +94,24 @@ Generates a new API endpoint.
 
 Example:
 ```bash
-yo angular-fullstack:endpoint message
+yo soa:endpoint message
 [?] What will the url of your endpoint to be? /api/messages
 ```
 
 Produces:
 
-    server/api/message/index.js
-    server/api/message/message.spec.js
-    server/api/message/message.controller.js
-    server/api/message/message.model.js  (optional)
-    server/api/message/message.socket.js (optional)
+    servers/server/api/message/index.js
+    servers/server/api/message/message.spec.js
+    servers/server/api/message/message.controller.js
+    servers/server/api/message/message.model.js  (optional)
+    servers/server/api/message/message.socket.js (optional)
 
 ### Route
 Generates a new route.
 
 Example:
 ```bash
-yo angular-fullstack:route myroute
+yo soa:route myroute
 [?] Where would you like to create this route? client/app/
 [?] What will the url of your route be? /myroute
 ```
@@ -129,7 +130,7 @@ Generates a controller.
 
 Example:
 ```bash
-yo angular-fullstack:controller user
+yo soa:controller user
 [?] Where would you like to create this controller? client/app/
 ```
 
@@ -143,7 +144,7 @@ Generates a directive.
 
 Example:
 ```bash
-yo angular-fullstack:directive myDirective
+yo soa:directive myDirective
 [?] Where would you like to create this directive? client/app/
 [?] Does this directive need an external html file? Yes
 ```
@@ -159,7 +160,7 @@ Produces:
 
 Example:
 ```bash
-yo angular-fullstack:directive simple
+yo soa:directive simple
 [?] Where would you like to create this directive? client/app/
 [?] Does this directive need an external html file? No
 ```
@@ -174,7 +175,7 @@ Generates a filter.
 
 Example:
 ```bash
-yo angular-fullstack:filter myFilter
+yo soa:filter myFilter
 [?] Where would you like to create this filter? client/app/
 ```
 
@@ -188,7 +189,7 @@ Generates an AngularJS service.
 
 Example:
 ```bash
-yo angular-fullstack:service myService
+yo soa:service myService
 [?] Where would you like to create this service? client/app/
 ```
 
@@ -205,7 +206,7 @@ Generates an AngularJS service decorator.
 
 Example:
 ```bash
-yo angular-fullstack:decorator serviceName
+yo soa:decorator serviceName
 [?] Where would you like to create this decorator? client/app/
 ```
 
@@ -217,7 +218,7 @@ Produces
 
 Deploying to OpenShift can be done in just a few steps:
 
-    yo angular-fullstack:openshift
+    yo soa:openshift
 
 A live application URL will be available in the output.
 
@@ -240,21 +241,12 @@ A live application URL will be available in the output.
 >
 >     rhc app-restart -a my-openshift-app
 
-To make your deployment process easier consider using [grunt-build-control](https://github.com/robwierzbowski/grunt-build-control).
-
-**Pushing Updates**
-
-    grunt
-
-Commit and push the resulting build, located in your dist folder:
-
-    grunt buildcontrol:openshift
 
 ### Heroku
 
 Deploying to heroku only takes a few steps.
 
-    yo angular-fullstack:heroku
+    yo soa:heroku
 
 To work with your new heroku app using the command line, you will need to run any `heroku` commands from the `dist` folder.
 
@@ -279,16 +271,6 @@ Your app should now be live. To view it run `heroku open`.
 >
 >     heroku config:set DOMAIN=<your-custom-domain>
 >
-
-To make your deployment process easier consider using [grunt-build-control](https://github.com/robwierzbowski/grunt-build-control).
-
-#### Pushing Updates
-
-    grunt
-
-Commit and push the resulting build, located in your dist folder:
-
-    grunt buildcontrol:heroku
 
 
 ## Bower Components
@@ -324,11 +306,11 @@ A `.yo-rc` file is generated for helping you copy configuration across projects,
 
 ## Testing
 
-Running `grunt test` will run the client and server unit tests with karma and mocha.
+Running `gulp test` will run the client and server unit tests with karma and mocha.
 
-Use `grunt test:server` to only run server tests.
+Coming Soon -- Use `gulp test:server` to only run server tests.
 
-Use `grunt test:client` to only run client tests.
+Coming Soon -- Use `gulp test:client` to only run client tests.
 
 **Protractor tests**
 
@@ -336,7 +318,7 @@ To setup protractor e2e tests, you must first run
 
 `npm run update-webdriver`
 
-Use `grunt test:e2e` to have protractor go through tests located in the `e2e` folder.
+Coming Soon -- Use `gulp test:e2e` to have protractor go through tests located in the `e2e` folder.
 
 ## Environment Variables
 
