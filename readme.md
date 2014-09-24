@@ -2,7 +2,7 @@
 
 > Yeoman generator for creating Service Oriented Applications using a multitude of technologies!!
 
-The of a generator for service oriented architecture (SOA), is to help teams immediatly set up their environment. Currently you are able to generator multiple servers by running yo soa:server [name], Which will generate a server in the servers/ directory. it will alos generate and angular.factory(), that makes the connection. 
+The purpose of a generator for service oriented architecture (SOA), is to help teams immediatly set up their environment. Currently you are able to generator multiple servers by running yo soa:server [name], Which will generate a server in the servers/ directory. it will alos generate and angular.factory(), that makes the connection. 
 
 ## Coming Soon
 * initialize a git repository every time a client or server is made
