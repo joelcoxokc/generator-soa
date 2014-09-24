@@ -44,10 +44,10 @@ angular.module '<%= scriptAppName %>'
       else
         scope = collection.push item
         # readyScope = collection.call('push', item);
-        return callback(event, item, scope)
+        return callback? event, item, collection
 
 
-      callback(event, item, collection)
+      callback? event, item, collection
 
     ###
     Syncs removed items on 'model:remove'

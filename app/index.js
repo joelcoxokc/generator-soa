@@ -222,7 +222,7 @@ var AngularFullstackGenerator = yeoman.generators.Base.extend({
     if(this.filters.sass) extensions.push('scss');
     if(this.filters.less) extensions.push('less');
 
-    this.composeWith('ng-component', {
+    this.composeWith('ng-modules', {
       options: {
         'routeDirectory': appPath,
         'directiveDirectory': appPath,
@@ -232,7 +232,7 @@ var AngularFullstackGenerator = yeoman.generators.Base.extend({
         'extensions': extensions,
         'basePath': 'client'
       }
-    }, { local: require.resolve('generator-ng-component/app/index.js') });
+    }, { local: require.resolve('generator-ng-modules/app/index.js') });
   },
 
   ngModules: function() {
