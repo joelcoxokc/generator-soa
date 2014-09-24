@@ -127,10 +127,12 @@ gulp.task('test', ['karma:inject:bower', 'serve'], function ( done ){
  */
 gulp.task('scripts', function(){
   return gulp.src(client.scripts.all)
-    .pipe( reload({stream: true, once: true}) )
-    <% if(filters.coffee){ %>.pipe( g.coffee() )<% } %>
+    .pipe( reload({stream: true, once: true}) )<% if(filters.coffee){ %>
+    .pipe( g.coffeelint() )
+    .pipe( g.coffeelint.reporter() )
+    .pipe( g.coffee() )<% } %><% if(filters.js){ %>
     .pipe( g.jshint() )
-    .pipe( g.jshint.reporter('jshint-stylish'))
+    .pipe( g.jshint.reporter('jshint-stylish'))<% } %>
     .pipe( gulp.dest( tmp.path ) )
     .pipe( g.concat(config.app_file_name) )
     .pipe( g.ngAnnotate({

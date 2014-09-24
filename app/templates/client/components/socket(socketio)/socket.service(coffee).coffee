@@ -25,37 +25,39 @@ angular.module '<%= scriptAppName %>'
   @param {Array} array
   @param {Function} callback
   ###
-  syncUpdates: (modelName, array, callback) ->
+  syncUpdates: (modelName, collection, callback) ->
 
     ###
     Syncs item creation/updates on 'model:save'
     ###
     socket.on modelName + ':save', (item) ->
-      oldItem = _.find array,
-        _id: item._id
-
-      index = array.indexOf oldItem
+      index = _.findIndex collection, {_id: item._id}
+      oldItem = collection[index] or null
       event = 'created'
+
 
       # replace oldItem if it exists
       # otherwise just add item to the collection
       if oldItem
-        array.splice index, 1, item
+        collection.splice(index, 1, item)
         event = 'updated'
       else
-        array.push item
+        scope = collection.push item
+        # readyScope = collection.call('push', item);
+        return callback(event, item, scope)
 
-      callback? event, item, array
+
+      callback(event, item, collection)
 
     ###
     Syncs removed items on 'model:remove'
     ###
     socket.on modelName + ':remove', (item) ->
       event = 'deleted'
-      _.remove array,
+      _.remove collection,
         _id: item._id
 
-      callback? event, item, array
+      callback? event, item, collection
 
   ###
   Removes listeners for a models updates on the socket

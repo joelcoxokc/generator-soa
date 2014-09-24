@@ -1,23 +1,32 @@
+;(function(){
 'use strict';
 
-angular.module('<%= scriptAppName %>')
-  .controller('NavbarCtrl', function ($scope, $location<% if(filters.auth) {%>, Auth<% } %>) {
-    $scope.menu = [{
+angular
+  .module('<%= scriptAppName %>')
+  .controller('NavbarCtrl', NavbarCtrl);
+
+  NavbarCtrl.$inject = ['$scope', '$location'<% if(filters.auth) {%>, 'Auth'<% } %>];
+  function NavbarCtrl($scope, $location<% if(filters.auth) {%>, Auth<% } %>) {
+    var vm = this;
+    vm.menu = [{
       'title': 'Home',
       'link': '/'
     }];
 
-    $scope.isCollapsed = true;<% if(filters.auth) {%>
-    $scope.isLoggedIn = Auth.isLoggedIn;
-    $scope.isAdmin = Auth.isAdmin;
-    $scope.getCurrentUser = Auth.getCurrentUser;
+    vm.isCollapsed = true;<% if(filters.auth) {%>
+    vm.isLoggedIn = Auth.isLoggedIn;
+    vm.isAdmin = Auth.isAdmin;
+    vm.getCurrentUser = Auth.getCurrentUser;
+    vm.logout = logout;
+    vm.isActive = isActive;
 
-    $scope.logout = function() {
+    function logout() {
       Auth.logout();
       $location.path('/login');
-    };<% } %>
+    }<% } %>
 
-    $scope.isActive = function(route) {
+    function isActive(route) {
       return route === $location.path();
-    };
-  });
+    }
+  }
+}).call(this);

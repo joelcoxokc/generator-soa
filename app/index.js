@@ -91,14 +91,14 @@ var AngularFullstackGenerator = yeoman.generators.Base.extend({
         name: "stylesheet",
         default: 1,
         message: "What would you like to write stylesheets with?",
-        choices: [ "CSS", "Sass", "Stylus", "Less"],
+        choices: [ "CSS", "Stylus", "Less", "Sass"],
         filter: function( val ) { return val.toLowerCase(); }
       },  {
         type: "list",
         name: "router",
-        default: 1,
+        default: 0,
         message: "What Angular router would you like to use?",
-        choices: [ "ngRoute", "uiRouter"],
+        choices: ["uiRouter"],
         filter: function( val ) { return val.toLowerCase(); }
       }, {
         type: "confirm",

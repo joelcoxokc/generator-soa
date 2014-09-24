@@ -45,9 +45,9 @@
     "gulp-cache": "^0.2.2",
     "gulp-cached": "^1.0.1",
     "gulp-changed": "^1.0.0",
-    "gulp-clean": "^0.3.1",
+    "gulp-clean": "^0.3.1",<% if(filters.coffee) { %>
     "gulp-coffee": "^2.2.0",
-    "gulp-coffeelint": "*",
+    "gulp-coffeelint": "*",<% } %>
     "gulp-concat": "^2.4.1",
     "gulp-csslint": "~0.1.4",
     "gulp-csso": "^0.2.9",
@@ -63,9 +63,9 @@
     "gulp-inject": "^1.0.1",
     "gulp-jade": "^0.8.0",
     "gulp-jshint": "^1.8.4",
-    "gulp-karma": "0.0.4",
+    "gulp-karma": "0.0.4",<% if(filters.less) { %>
     "gulp-less": "*",
-    "gulp-less-sourcemap": "*",
+    "gulp-less-sourcemap": "*",<% } %>
     "gulp-livereload": "^2.1.1",
     "gulp-load-plugins": "^0.6.0",
     "gulp-minify-css": "~0.3.4",
@@ -76,10 +76,10 @@
     "gulp-recess": "*",
     "gulp-remember": "*",
     "gulp-rename": "^1.2.0",
-    "gulp-rimraf": "^0.1.0",
+    "gulp-rimraf": "^0.1.0",<% if(filters.sass) { %>
     "gulp-ruby-sass": "^0.7.1",
+    "gulp-sass": "^0.7.3",<% } %>
     "gulp-run-sequence": "^0.3.2",
-    "gulp-sass": "^0.7.3",
     "gulp-serve": "~0.2.0",
     "gulp-shell": "^0.2.9",
     "gulp-size": "^1.1.0",
@@ -129,8 +129,8 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "start": "node server/app.js",
-    "test": "grunt test",
+    "start": "node servers/server/app.js",
+    "test": "gulp test",
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"
   },
   "private": true
