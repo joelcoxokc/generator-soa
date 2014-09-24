@@ -51,7 +51,7 @@ Run `gulp` for building, `gulp serve` for preview, and `gulp dist` for a preview
 A gulp task looks for new files in your `client/app` and `client/components` folder and automatically injects them in the appropriate places based on an injection block.
 
 * `less` files into `client/app.less`
-* `scss` files into `client/app.scss`
+* `scss` files into `client/app.scss` -- Currently has Bugs. 
 * `stylus` files into `client/app.styl`
 * `css` files into `client/index.html`
 * `js` files into `client/index.html`
@@ -74,9 +74,9 @@ Available generators:
     - [soa:provider](#service)
     - [soa:factory](#service)
     - [soa:decorator](#decorator)
-* Deployment
-    - [soa:openshift](#openshift)
-    - [soa:heroku](#heroku)
+<!--* Deployment-->
+    <!--- [soa:openshift](#openshift)-->
+    <!--- [soa:heroku](#heroku)-->
 
 ### App
 Sets up a new AngularJS + Express app, generating all the boilerplate you need to get started.
