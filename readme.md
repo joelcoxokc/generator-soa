@@ -2,6 +2,15 @@
 
 > Yeoman generator for creating Service Oriented Applications using a multitude of technologies!!
 
+The of a generator for service oriented architecture (SOA), is to help teams immediatly set up their environment. Currently you are able to generator multiple servers by running yo soa:server [name], Which will generate a server in the servers/ directory. it will alos generate and angular.factory(), that makes the connection. 
+
+## Coming Soon
+* initialize a git repository every time a client or server is made
+* create multiple clients - choices [ ionic, oxford, bootstrap ]
+* allow options for databases [ MongoDB, MySQL, PostgresSql, Neo4j, Firebase ]
+* allow for server framework of choice [ sails, express ]
+* allow for ECMA Script 6 option
+
 ## Example project
 
 Source code: https://github.com/JoelCoxOKC/angular-soa-seed
@@ -74,9 +83,9 @@ Available generators:
     - [soa:provider](#service)
     - [soa:factory](#service)
     - [soa:decorator](#decorator)
-<!--* Deployment-->
-    <!--- [soa:openshift](#openshift)-->
-    <!--- [soa:heroku](#heroku)-->
+* Deployment
+    - [soa:openshift](#openshift) <-- Coming Soon
+    - [soa:heroku](#heroku) <-- Coming Soon
 
 ### App
 Sets up a new AngularJS + Express app, generating all the boilerplate you need to get started.
