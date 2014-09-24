@@ -1,8 +1,11 @@
 'use strict'
 
 angular.module '<%= scriptAppName %>'
-.factory 'Auth', ($location, $rootScope, $http, User, $cookieStore, $q) ->
-  currentUser = if $cookieStore.get 'token' then User.get() else {}
+.factory 'Auth', (User, $storage, serverUrl, $location, $rootScope, $http, $q) ->
+  currentUser = {}
+  if $storage.get 'user_token'
+    currentUser = User.one('me').get().$object
+
 
   ###
   Authenticate user and save token
@@ -13,14 +16,14 @@ angular.module '<%= scriptAppName %>'
   ###
   login: (user, callback) ->
     deferred = $q.defer()
-    $http.post '/auth/local',
+    $http.post serverUrl+'auth/local',
       email: user.email
       password: user.password
 
-    .success (data) ->
-      $cookieStore.put 'token', data.token
-      currentUser = User.get()
-      deferred.resolve data
+    .success (res) ->
+      $storage.set 'user_token', res.token
+      currentUser = User.one('me').get().$object
+      deferred.resolve res
       callback?()
 
     .error (err) =>
@@ -37,7 +40,7 @@ angular.module '<%= scriptAppName %>'
   @param  {Function}
   ###
   logout: ->
-    $cookieStore.remove 'token'
+    $storage.clear 'user_token'
     currentUser = {}
     return
 
@@ -50,17 +53,15 @@ angular.module '<%= scriptAppName %>'
   @return {Promise}
   ###
   createUser: (user, callback) ->
-    User.save user,
-      (data) ->
-        $cookieStore.put 'token', data.token
-        currentUser = User.get()
-        callback? user
-
-      , (err) =>
+    User
+      .post( user)
+      .then (data) ->
+        $storage.set 'user_token', data.token
+        currentUser = User.one('me').get().$object
+        callback? data
+      .catch (err) =>
         @logout()
         callback? err
-
-    .$promise
 
 
   ###
@@ -72,19 +73,21 @@ angular.module '<%= scriptAppName %>'
   @return {Promise}
   ###
   changePassword: (oldPassword, newPassword, callback) ->
-    User.changePassword
-      id: currentUser._id
-    ,
-      oldPassword: oldPassword
-      newPassword: newPassword
-
-    , (user) ->
-      callback? user
-
-    , (err) ->
-      callback? err
-
-    .$promise
+    User
+      .one(currentUser._id)
+      .one('password')
+      .put(
+        {
+          id: currentUser._id
+        },{
+          oldPassword: oldPassword
+          newPassword: newPassword
+        }
+      )
+      .then (user) ->
+        callback? user
+      .catch (err) ->
+        callback? err
 
 
   ###
@@ -133,4 +136,4 @@ angular.module '<%= scriptAppName %>'
   Get auth token
   ###
   getToken: ->
-    $cookieStore.get 'token'
+    $storage.get 'user_token'

@@ -2,10 +2,10 @@
 'use strict';
   angular
     .module('<%= scriptAppName %>')
-    .factory('UserModel', UserModel);
+    .factory('User', User);
 
-  UserModel.$inject = ['Restangular'];
-  function UserModel(Restangular){
+  /* @inject */
+  function User(Restangular){
     return Restangular.service('users');
   }
 

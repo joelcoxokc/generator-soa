@@ -5,13 +5,13 @@
     .module('<%= scriptAppName %>')
     .controller( 'AdminCtrl', AdminCtrl );
 
-  AdminCtrl.$inject = ['$scope', 'Auth', 'User', 'resolvedUsers', '$location'];
+  /* @inject */
   function AdminCtrl($scope, Auth, User, resolvedUsers, $location) {
     var vm = this;
     vm.details = false;
     vm.currentUser = null;
     vm.users = resolvedUsers;
-    vm.remove = remove;
+    vm.destroy = destroy;
     vm.showUser = showUser;
     vm.hideUser = hideUser;
 
@@ -29,8 +29,8 @@
       vm.details = false;
     }
 
-    function remove(user) {
-      User.remove({ id: user._id });
+    function destroy(user) {
+      user.remove();
       angular.forEach(vm.users, function(u, i) {
         if (u === user) {
           vm.users.splice(i, 1);

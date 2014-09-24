@@ -4,10 +4,7 @@
     .module('<%= scriptAppName %>')
     .config( main );
 
-  main.$inject = ['$stateProvider'];
-
-  /////////////////////
-
+  /* @inject */
   function main($stateProvider) {
     $stateProvider
       .state('main', {

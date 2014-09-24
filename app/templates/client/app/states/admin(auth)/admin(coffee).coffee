@@ -8,8 +8,8 @@ angular.module '<%= scriptAppName %>'
       templateUrl: 'app/states/admin/admin.html'
       controller: 'AdminCtrl as vm',
       resolve:
-        resolvedUsers: (UserModel)->
-          return UserModel.getList()
+        resolvedUsers: (User)->
+          return User.getList()
             .then (data)->
               console.log('resolved', data)
               return data

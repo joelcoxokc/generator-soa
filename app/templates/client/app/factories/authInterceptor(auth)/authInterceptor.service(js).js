@@ -4,8 +4,8 @@ angular
   .module('<%= scriptAppName %>')
   .factory('authInterceptor', authInterceptor);
 
-  authInterceptor.$inject = ['$rootScope', '$q', '$cookieStore', '$location'];
-  function authInterceptor($rootScope, $q, $cookieStore, $location){
+  /* @inject */
+  function authInterceptor($rootScope, $q, $storage, $location){
     return {
       request:request,
       responseError: responseError
@@ -13,8 +13,8 @@ angular
     // Add authorization token to headers
     function request(config) {
       config.headers = config.headers || {};
-      if ($cookieStore.get('token')) {
-        config.headers.Authorization = 'Bearer ' + $cookieStore.get('token');
+      if ($storage.get('user_token')) {
+        config.headers.Authorization = 'Bearer ' + $storage.get('user_token');
       }
       return config;
     }
@@ -24,7 +24,7 @@ angular
       if(response.status === 401) {
         $location.path('/login');
         // remove any stale tokens
-        $cookieStore.remove('token');
+        $storage.clear('user_token');
         return $q.reject(response);
       }
       else {

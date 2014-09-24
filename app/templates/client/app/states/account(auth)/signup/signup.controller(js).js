@@ -5,8 +5,7 @@
     .module('<%= scriptAppName %>')
     .controller('SignupCtrl', SignupCtrl);
 
-    SignupCtrl.$inject = ['$scope', 'Auth', '$location'<% if (filters.oauth) { %>, '$window'<% } %>];
-
+    /* @inject */
     function SignupCtrl($scope, Auth, $location<% if (filters.oauth) { %>, $window<% } %>) {
       var vm = this;
       vm.errors = {};

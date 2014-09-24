@@ -5,8 +5,7 @@
     .module('<%= scriptAppName %>')
     .controller('MainCtrl', MainCtrl);
 
-  MainCtrl.$inject = ['$scope', 'Thing'<% if(filters.socketio) { %>, 'socket'<% } %>];
-
+  /* @inject */
   function MainCtrl($scope, Thing<% if(filters.socketio) { %>, socket<% } %>) {
     var vm = this;
     vm.awesomeThings = [];

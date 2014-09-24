@@ -9,12 +9,7 @@ angular
   .config( appConfig )<% if(filters.auth) { %>
   .run( run );<% } %>
 
-  appConfig.$inject = [
-    'RestangularProvider',
-    '$stateProvider',
-    '$urlRouterProvider',
-    '$locationProvider'<% if(filters.auth) { %>,
-    '$httpProvider'<% } %>];
+  /* @inject */
   function appConfig(RestangularProvider, $stateProvider, $urlRouterProvider, $locationProvider<% if(filters.auth) { %>, $httpProvider<% } %>) {
     $urlRouterProvider
       .otherwise('/');
@@ -30,7 +25,7 @@ angular
     $httpProvider.interceptors.push('authInterceptor');<% } %>
   }
   <% if(filters.auth) { %>
-  run.$inject = ['$rootScope', '$location', 'Auth'];
+  /* @inject */
   function run($rootScope, $location, Auth) {
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {

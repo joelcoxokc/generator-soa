@@ -4,8 +4,7 @@
     .module('<%= scriptAppName %>')
     .controller('LoginCtrl', LoginCtrl);
 
-    LoginCtrl.$inject = ['$scope', 'Auth', '$location'<% if (filters.oauth) { %>, '$window'<% } %>];
-
+    /* @inject */
     function LoginCtrl($scope, Auth, $location<% if (filters.oauth) { %>, $window<% } %>) {
       var vm = this;
       vm.user = {};
