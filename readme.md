@@ -1,11 +1,27 @@
 # Gulp AngularJS Full-Stack generator [![Build Status](https://travis-ci.org/DaftMonk/generator-angular-fullstack.svg?branch=master)](http://travis-ci.org/DaftMonk/generator-angular-fullstack)
 
+> Currently Under Development.
+
 > Yeoman generator for creating Service Oriented Applications using a multitude of technologies!!
 
-The purpose of a generator for service oriented architecture (SOA), is to help teams immediatly set up their environment. Currently you are able to generator multiple servers by running yo soa:server [name], Which will generate a server in the servers/ directory. it will alos generate and angular.factory(), that makes the connection. 
+The purpose of a generator for service oriented architecture (SOA), is to help teams immediately set up their environment. Currently you are able to generator multiple servers by running yo soa:server [name], Which will generate a server in the servers/ directory. It will also generate and angular.factory(), that makes the connection. 
+
+## Following Best Practices for Angular
+* This Generator generates code that strictly follows this style guide.
+@John Papa's Best Practices: https://github.com/JoelCoxOKC/angular-soa-seed
+
+
+## Features
+* Angular Full-Stack App.
+* Gulp task runner.
+* Server API's for things and users.
+* Data Base option using MongoDB.
+* Full Server Authentication using Passport.
+* Clean client & server side App Architecture.
 
 ## Coming Soon
-* initialize a git repository every time a client or server is made
+* Run yo soa:paths to set the default directory paths.
+* initialize a git repository every time a client or server is made.
 * create multiple clients - choices [ ionic, oxford, bootstrap ]
 * allow options for databases [ MongoDB, MySQL, PostgresSql, Neo4j, Firebase ]
 * allow for server framework of choice [ sails, express ]
@@ -45,7 +61,7 @@ Run `gulp` for building, `gulp serve` for preview, and `gulp dist` for a preview
 * Scripts: `JavaScript`, `CoffeeScript`
 * Markup:  `HTML`, `Jade`
 * Stylesheets: `CSS`, `Stylus`, `Sass`, `Less`,
-* Angular Routers: `ngRoute`, `ui-router`
+* Angular Routers: `ui-router`
 
 **Server**
 
@@ -55,11 +71,14 @@ Run `gulp` for building, `gulp serve` for preview, and `gulp dist` for a preview
 * oAuth integrations: `Facebook` `Twitter` `Google`
 * Socket.io integration: `Yes`, `No`
 
-## Injection
+## Injection 
+* Currently not working Only in run time.
+* Must re-run gulp for injection.
+* Coming in version 1.1.7.
 
 A gulp task looks for new files in your `client/app` and `client/components` folder and automatically injects them in the appropriate places based on an injection block.
 
-* `less` files into `client/app.less`
+* `less` files into `client/styles/app.less`
 * `scss` files into `client/app.scss` -- Currently has Bugs. 
 * `stylus` files into `client/app.styl`
 * `css` files into `client/index.html`
@@ -73,7 +92,7 @@ Available generators:
 * App
     - [soa](#app) (aka [soa:app](#app))
 * Server Side
-    - [soa:endpoint](#endpoint)
+    - [soa:endpoint](#endpoint) <-- currently has bug issues
 * Client Side
     - [soa:route](#route)
     - [soa:controller](#controller)
@@ -83,6 +102,7 @@ Available generators:
     - [soa:provider](#service)
     - [soa:factory](#service)
     - [soa:decorator](#decorator)
+    - [soa:model](#model) <-- angular factory that communicates to the server-api
 * Deployment
     - [soa:openshift](#openshift) <-- Coming Soon
     - [soa:heroku](#heroku) <-- Coming Soon
@@ -225,61 +245,6 @@ Produces
 
 Deploying to OpenShift can be done in just a few steps:
 
-    yo soa:openshift
-
-A live application URL will be available in the output.
-
-> **oAuth**
->
-> If you're using any oAuth strategies, you must set environment variables for your selected oAuth. For example, if we're using Facebook oAuth we would do this :
->
->     rhc set-env FACEBOOK_ID=id -a my-openshift-app
->     rhc set-env FACEBOOK_SECRET=secret -a my-openshift-app
->
-> You will also need to set `DOMAIN` environment variable:
->
->     rhc config:set DOMAIN=<your-openshift-app-name>.rhcloud.com
->
->     # or (if you're using it):
->
->     rhc config:set DOMAIN=<your-custom-domain>
->
-> After you've set the required environment variables, restart the server:
->
->     rhc app-restart -a my-openshift-app
-
-
-### Heroku
-
-Deploying to heroku only takes a few steps.
-
-    yo soa:heroku
-
-To work with your new heroku app using the command line, you will need to run any `heroku` commands from the `dist` folder.
-
-
-If you're using mongoDB you will need to add a database to your app:
-
-    heroku addons:add mongohq
-
-Your app should now be live. To view it run `heroku open`.
-
->
-> If you're using any oAuth strategies, you must set environment variables for your selected oAuth. For example, if we're using **Facebook** oAuth we would do this :
->
->     heroku config:set FACEBOOK_ID=id
->     heroku config:set FACEBOOK_SECRET=secret
->
-> You will also need to set `DOMAIN` environment variable:
->
->     heroku config:set DOMAIN=<your-heroku-app-name>.herokuapp.com
->
->     # or (if you're using it):
->
->     heroku config:set DOMAIN=<your-custom-domain>
->
-
-
 ## Bower Components
 
 The following packages are always installed by the [app](#app) generator:
@@ -290,6 +255,7 @@ The following packages are always installed by the [app](#app) generator:
 * angular-resource
 * angular-sanitize
 * angular-scenario
+* Restangular
 * es5-shim
 * font-awesome
 * json3
@@ -353,21 +319,18 @@ Overview
 
 An example client component in `client/app`
 
-    main
-    ├── main.js                 - Routes
-    ├── main.controller.js      - Controller for our main route
-    ├── main.controller.spec.js - Test
-    ├── main.html               - View
-    └── main.less               - Styles
-
-An example server component in `server/api`
-
-    thing
-    ├── index.js                - Routes
-    ├── thing.controller.js     - Controller for our `thing` endpoint
-    ├── thing.model.js          - Database model
-    ├── thing.socket.js         - Register socket events
-    └── thing.spec.js           - Test
+ factories
+    ├── auth                     - Auth Factory.
+    ├── authInterceptor    - authInterceptor for authorized headers.
+    ├── logger                  - Toaster notifications. <-- Not Working
+    ├── storage                - Local Storage for authentication tokens.
+ models
+    ├── user    - Factory for dealing directly with the sever api.
+    ├── thing   - Factory for dealing directly with the sever api.
+ states
+    ├── account    - Handles states for Login/Signup/Settings.
+    ├── admin      - Handles state for Admin
+    ├── main        - Handles initial state, previewing Things in real time
 
 ## Contribute
 
