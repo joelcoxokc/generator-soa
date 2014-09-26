@@ -1,0 +1,38 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div class="col-md-4">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Rooms
+      <button ng-click="vm.showNew = !vm.showNew"
+              type="button"
+              class="btn btn-sm btn-primary pull-right"
+              ng-class="{'btn-danger': vm.showNew}">
+        <i class="fa fa-plus" ng-class="{'fa-minus': vm.showNew}"></i>
+      </button>
+    </div>
+    <div class="panel-body">
+      <form ng-submit="vm.addRoom()">
+        <div class="input-group" ng-show="vm.showNew">
+          <input type='text' class="form-control" ng-model="vm.newRoom" placeholder="name">
+          <span class="input-group-btn">
+            <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i></button>
+          </span>
+        </div>
+      </form>
+      <ul class="list-group">
+        <li class="list-group-item" ng-repeat="room in vm.rooms">
+          <a href="#/rooms/{{room._id}}">
+            {{room.name}}
+          </a>
+          <button type="button"
+                  class="btn btn-xs btn-default pull-right"
+                  ng-click="room.remove()">
+            <i class="fa fa-minus"></i></button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="col-md-8">
+  <ui-view></ui-view>
+</div>

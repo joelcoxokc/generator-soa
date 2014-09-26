@@ -30,6 +30,10 @@ Generator.prototype.askFor = function askFor() {
       name: 'route',
       message: 'What will the url of your endpoint to be?',
       default: base + name
+    },{
+      name: 'mode_dir',
+      message: 'where would you like to put the client model?',
+      default: 'client/app/models'
     }
   ];
 
@@ -37,7 +41,8 @@ Generator.prototype.askFor = function askFor() {
     if(props.route.charAt(0) !== '/') {
       props.route = '/' + props.route;
     }
-
+    this.mode_dir = props.mode_dir + '/' + this.name;
+    this.pluralName = this.name + 's';
     this.route = props.route;
     done();
   }.bind(this));
@@ -69,8 +74,14 @@ Generator.prototype.registerEndpoint = function registerEndpoint() {
   }
 };
 
+Generator.prototype.createModel = function createFiles() {
+  // console.log
+  var dest = this.mode_dir;
+  this.sourceRoot(path.join(__dirname, './model'));
+  ngUtil.processDirectory(this, '.', dest);
+};
 Generator.prototype.createFiles = function createFiles() {
-  var dest = this.config.get('endpointDirectory') || 'server/api/' + this.name;
+  var dest = this.config.get('endpointDirectory') || 'servers/server/api/' + this.name;
   this.sourceRoot(path.join(__dirname, './templates'));
   ngUtil.processDirectory(this, '.', dest);
 };
