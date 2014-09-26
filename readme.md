@@ -8,7 +8,7 @@ The purpose of a generator for service oriented architecture (SOA), is to help t
 
 ## Following Best Practices for Angular
 * This Generator generates code that strictly follows this style guide.
-@John Papa's Best Practices: https://github.com/johnpapa/angularjs-styleguide
+* @John Papa's Best Practices: https://github.com/johnpapa/angularjs-styleguide
 
 
 ## Features
