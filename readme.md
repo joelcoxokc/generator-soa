@@ -319,18 +319,48 @@ Overview
 
 An example client component in `client/app`
 
- factories
-    ├── auth                     - Auth Factory.
-    ├── authInterceptor    - authInterceptor for authorized headers.
-    ├── logger                  - Toaster notifications. <-- Not Working
-    ├── storage                - Local Storage for authentication tokens.
- models
-    ├── user    - Factory for dealing directly with the sever api.
-    ├── thing   - Factory for dealing directly with the sever api.
- states
-    ├── account    - Handles states for Login/Signup/Settings.
-    ├── admin      - Handles state for Admin
-    ├── main        - Handles initial state, previewing Things in real time
+    factories
+     │    ├── auth                     - Auth Factory.
+     │    ├── authInterceptor    - authInterceptor for authorized headers.
+     │    ├── logger                  - Toaster notifications. <-- Not Working
+     │    └── storage                - Local Storage for authentication tokens.
+     │
+    models
+     ├── user
+     │    ├── user.model       - Factory for dealing directly with the sever api.
+     │    └── user.model.spec  - Test Spec for user.model
+     ├── thing
+     │    ├── thing.model      - Factory for dealing directly with the sever api.
+     │    └── thing.model.spec - Test Spec for thing.model
+     │    
+    states          - All ui.router States for the app
+     ├── account
+     │    ├── login
+     │    │    ├── login.controller
+     │    │    └── login.view
+     │    │    
+     │    ├── signup
+     │    │    ├── signup.controller
+     │    │    └── signup.view
+     │    │    
+     │    ├── settings
+     │    │    ├── settings.controller
+     │    │    └── settings.view
+     │    │
+     │    └── account.routes - routes for login/signup/settings
+     │
+     ├── admin
+     │    ├── admin.controller
+     │    ├── admin.view
+     │    └── admin.routes - routes for admin
+     │
+     ├── main
+     │    ├── main.controller
+     │    ├── main.controller.spec
+     │    ├── main.view
+     │    └── main.routes - routes for admin
+     │
+     └── app.js - Main Angular.module
 
 ## Contribute
 
