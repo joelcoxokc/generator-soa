@@ -1,0 +1,16 @@
+.flip {
+    width: 400px;
+    height: 256px;
+    margin: 50px auto;
+    font-size: 3em;
+    text-align: center;
+}
+
+.face.front {
+    background-color: white;
+}
+
+.face.back {
+    background-color: black;
+    color: white;
+}

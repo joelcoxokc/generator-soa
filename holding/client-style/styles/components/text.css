@@ -1,0 +1,148 @@
+
+.text-left {
+    text-align: left
+}
+
+.text-right {
+    text-align: right
+}
+
+.text-center {
+    text-align: center
+}
+
+.text-justify {
+    text-align: justify
+}
+
+.text-nowrap {
+    white-space: nowrap
+}
+
+.text-lowercase {
+    text-transform: lowercase
+}
+
+.text-uppercase {
+    text-transform: uppercase
+}
+
+.text-capitalize {
+    text-transform: capitalize
+}
+
+.text-muted {
+    color: #999
+}
+
+.text-primary {
+    color: #31c0be
+}
+
+a.text-primary:hover {
+    color: #279796
+}
+
+.text-success {
+    color: #4c9c77
+}
+
+a.text-success:hover {
+    color: #3b7a5d
+}
+
+.text-info {
+    color: #538da7
+}
+
+a.text-info:hover {
+    color: #427085
+}
+
+.text-warning {
+    color: #bfa34c
+}
+
+a.text-warning:hover {
+    color: #9f8639
+}
+
+.text-danger {
+    color: #ca674c
+}
+
+a.text-danger:hover {
+    color: #af4e34
+}
+
+
+.page-container {
+    max-width: 1170px;
+    margin: auto
+}
+
+.gradient-text {
+    font-size: 150px;
+    font-weight: 300;
+    color: #31c0be;
+    background: -webkit-linear-gradient(92deg, #fb83fa, #00aced);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent
+}
+
+.text-ultralight {
+    font-weight: 100
+}
+
+.color-primary {
+    color: #31c0be
+}
+
+.color-success {
+    color: #60cd9b
+}
+
+.color-info {
+    color: #66b5d7
+}
+
+.color-info-alt {
+    color: #8170ca
+}
+
+.color-warning {
+    color: #eec95a
+}
+
+.color-danger {
+    color: #e87352
+}
+
+.color-dark {
+    color: #242633
+}
+
+.color-reverse {
+    color: #fff
+}
+
+
+.color-gray-darker {
+    color: #222
+}
+
+.color-gray-dark {
+    color: #333
+}
+
+.color-gray {
+    color: #555
+}
+
+.color-gray-light {
+    color: #999
+}
+
+.color-gray-lighter {
+    color: #eee
+}

@@ -44,7 +44,7 @@ var config = {
   build: {
     path: './.tmp/',
     stylePath: './.tmp/styles/',
-    styles: './.tmp/styles/*.css',
+    styles: './.tmp/styles/**/*.css',
     scriptPath: './.tmp/scripts/',
     scripts: ['./tmp/app/app.js', './.tmp/{app,components}/**/*.js'],
     templatePath: './.tmp/templates/',

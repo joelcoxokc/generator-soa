@@ -1,0 +1,13 @@
+
+<div class="nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="thing in things">
+
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <a href="#" tooltip="{{thing.info}}">
+          {{thing.name}}
+          <button type="button" class="close" ng-click="things.one(thing._id).remove()">&times;</button>
+        </a>
+      </div>
+    </div>
+
+</div>
