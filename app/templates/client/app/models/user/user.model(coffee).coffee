@@ -1,5 +1,5 @@
 'use-strict'
 angular
   .module('<%= scriptAppName %>')
-  .factory 'UserModel', (Restangular)->
+  .factory 'User', (Restangular)->
     return Restangular.service('users')

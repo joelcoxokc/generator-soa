@@ -84,6 +84,7 @@ gulp.task('browserSync', function(){
   <% if(filters.sass){ %>gulp.watch(client.styles.sass, ['styles', reload]);<% } %>
   <% if(filters.css){ %>gulp.watch(client.styles.css, ['styles', reload]);<% } %>
   <% if(filters.less){ %>gulp.watch(client.styles.less, ['styles', reload]);<% } %>
+  gulp.watch(client.templates.jade, ['compile:templates'], reload);
   gulp.watch(client.scripts.all, ['scripts']);
   gulp.watch(client.images, reload);
 });

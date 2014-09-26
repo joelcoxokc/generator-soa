@@ -4,10 +4,7 @@
     .module('<%= scriptAppName %>')
     .config( account );
 
-  account.$inject = ['$stateProvider'];
-
-  ////////////
-
+  /* @inject */
   function account($stateProvider) {
     $stateProvider
       .state('login', {

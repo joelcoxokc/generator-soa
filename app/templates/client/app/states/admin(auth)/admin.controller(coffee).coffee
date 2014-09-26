@@ -7,7 +7,7 @@ angular.module '<%= scriptAppName %>'
     @details = false
     @currentUser = null
     @users = resolvedUsers
-    @remove = remove
+    @destroy = destroy
     @showUser = showUser
     @hideUser = hideUser
 
@@ -24,8 +24,8 @@ angular.module '<%= scriptAppName %>'
     return
 
 
-  remove = (user)=>
-    User.remove({ id: user._id })
+  destroy = (user)=>
+    user.remove()
     angular.forEach @users, (u, i)=>
       if u is user
         @users.splice(i, 1)

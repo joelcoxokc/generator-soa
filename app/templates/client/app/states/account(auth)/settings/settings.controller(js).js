@@ -5,7 +5,7 @@ angular
   .module('<%= scriptAppName %>')
   .controller('SettingsCtrl', SettingsCtrl);
 
-  SettingsCtrl.$inject = ['$scope', 'User', 'Auth'];
+  /* @inject */
   function SettingsCtrl($scope, User, Auth) {
     var vm = this;
     vm.errors = {};

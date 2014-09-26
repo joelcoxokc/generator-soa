@@ -5,12 +5,13 @@
     .module('<%= scriptAppName %>')
        .factory('Auth', Auth);
 
-    Auth.$inject = ['serverBaseUrl', '$location', '$rootScope', '$http', 'User', '$cookieStore', '$q'];
-    function Auth(serverBaseUrl, $location, $rootScope, $http, User, $cookieStore, $q) {
+    /* @inject */
+    function Auth(User, $storage, serverUrl, $location, $rootScope, $http, $q) {
       var self = this;
+
       var currentUser = {};
-      if($cookieStore.get('token')) {
-        currentUser = User.get();
+      if($storage.get('user_token')){
+        currentUser = User.one('me').get().$object
       }
       return {
         login: login,
@@ -32,24 +33,30 @@
        * @return {Promise}
        */
       function login(user, callback) {
-        var cb = callback || angular.noop;
+        var callback = callback || angular.noop;
         var deferred = $q.defer();
 
-        $http.post(serverBaseUrl+'/auth/local', {
+        var LoginData = {
           email: user.email,
           password: user.password
-        }).
-        success(function(data) {
-          $cookieStore.put('token', data.token);
-          currentUser = User.get();
-          deferred.resolve(data);
-          return cb();
-        }).
-        error(function(err) {
-          self.logout();
-          deferred.reject(err);
-          return cb(err);
-        }.bind(self));
+        }
+        $http
+          .post(serverUrl+'auth/local', {
+            email: user.email,
+            password: user.password
+          })
+          .then(function ( res ) {
+            console.log("data", res.data)
+            $storage.set('user_token', res.data.token );
+            currentUser = User.one('me').get().$object;
+            deferred.resolve(res.data);
+            return callback();
+          })
+          .catch(function ( err ) {
+            logout();
+            deferred.reject( err );
+            return callback( err );
+          }.bind(self));
 
         return deferred.promise;
       }
@@ -60,7 +67,8 @@
        * @param  {Function}
        */
       function logout() {
-        $cookieStore.remove('token');
+
+        $storage.clear('user_token');
         currentUser = {};
       }
 
@@ -72,18 +80,21 @@
        * @return {Promise}
        */
       function createUser(user, callback) {
-        var cb = callback || angular.noop;
-
-        return User.save(user,
-          function(data) {
-            $cookieStore.put('token', data.token);
-            currentUser = User.get();
-            return cb(user);
-          },
-          function(err) {
-            self.logout();
-            return cb(err);
-          }.bind(self)).$promise;
+        var callback = callback || angular.noop;
+        console.log(User)
+        return User
+          .post(user)
+          .then(function (data) {
+            console.log("create", data)
+            $storage.set('user_token', data.token);
+            currentUser = User.one('me').get().$object;
+            return callback(data);
+          })
+          .catch(function (err) {
+            console.log("err", err)
+            logout();
+            return callback(err);
+          })
       }
 
       /**
@@ -95,17 +106,19 @@
        * @return {Promise}
        */
       function changePassword(oldPassword, newPassword, callback) {
-        var cb = callback || angular.noop;
-
-        return User
-          .changePassword({ id: currentUser._id }, {
+        var callback = callback || angular.noop;
+        return User.one(currentUser._id)
+          .one('password')
+          .put({
             oldPassword: oldPassword,
             newPassword: newPassword
-          }, function(user) {
-            return cb(user);
-          }, function(err) {
-            return cb(err);
-          }).$promise;
+          })
+          .then(function (user) {
+            return callback(user);
+          })
+          .catch(function (err) {
+            return callback(err);
+          });
       }
 
       /**
@@ -129,17 +142,19 @@
       /**
        * Waits for currentUser to resolve before checking if user is logged in
        */
-      function isLoggedInAsync(cb) {
+      function isLoggedInAsync( callback ) {
         if(currentUser.hasOwnProperty('$promise')) {
-          currentUser.$promise.then(function() {
-            cb(true);
-          }).catch(function() {
-            cb(false);
-          });
+          currentUser
+            .then(function() {
+              callback(true);
+            })
+            .catch(function() {
+              callback(false);
+            });
         } else if(currentUser.hasOwnProperty('role')) {
-          cb(true);
+          callback(true);
         } else {
-          cb(false);
+          callback(false);
         }
       }
 
@@ -156,7 +171,7 @@
        * Get auth token
        */
       function getToken() {
-        return $cookieStore.get('token');
+        return $storage.get('user_token');
       }
     }
 }).call(this);

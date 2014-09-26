@@ -5,16 +5,16 @@ angular.module '<%= scriptAppName %>'
   $stateProvider
   .state 'login',
     url: '/login'
-    templateUrl: 'app/account/login/login.html'
+    templateUrl: 'app/states/account/login/login.html'
     controller: 'LoginCtrl as vm'
 
   .state 'signup',
     url: '/signup'
-    templateUrl: 'app/account/signup/signup.html'
+    templateUrl: 'app/states/account/signup/signup.html'
     controller: 'SignupCtrl as vm'
 
   .state 'settings',
     url: '/settings'
-    templateUrl: 'app/account/settings/settings.html'
+    templateUrl: 'app/states/account/settings/settings.html'
     controller: 'SettingsCtrl as vm'
     authenticate: true

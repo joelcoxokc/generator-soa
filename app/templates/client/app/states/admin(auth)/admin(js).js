@@ -5,7 +5,7 @@
     .module('<%= scriptAppName %>')
     .config( admin );
 
-  admin.$inject = ['$stateProvider'];
+  /* @inject */
   function admin($stateProvider) {
     $stateProvider
       .state('admin', {
@@ -16,9 +16,9 @@
           resolvedUsers: resolvedUsers
         }
       });
-    resolvedUsers.$inject = ['UserModel'];
-    function resolvedUsers(UserModel){
-      return UserModel.getList()
+    /* @inject */
+    function resolvedUsers(User){
+      return User.getList()
         .then(function (data){
           console.log('resolved', data);
           return data;

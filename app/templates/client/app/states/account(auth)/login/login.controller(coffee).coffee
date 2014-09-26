@@ -6,7 +6,7 @@ angular.module '<%= scriptAppName %>'
   @user = {}
   @errors = {}
 
-  @login = (form) ->
+  @login = (form) =>
     @submitted = true
 
     if form.$valid
@@ -21,12 +21,11 @@ angular.module '<%= scriptAppName %>'
 
       .catch (err) =>
         @errors.other = err.message
-        return
+
     return
 
 <% if(filters.oauth) {%>
   @loginOauth = (provider) ->
     $window.location.href = '/auth/' + provider<% } %>
-    return
 
   return
