@@ -10,8 +10,16 @@ angular
     var vm = this;
     vm.menu = [{
       'title': 'Home',
-      'link': '/'
-    }];
+      'link': '/',
+      'icon':'fa-home',
+      'color':'default'
+    },{
+      'title': 'Rooms',
+      'link': '/rooms',
+      'icon':'fa-comments-o',
+      'color':'success'
+    }
+    ];
 
     vm.isCollapsed = true;<% if(filters.auth) {%>
     vm.isLoggedIn = Auth.isLoggedIn;

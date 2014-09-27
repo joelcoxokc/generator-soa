@@ -256,6 +256,7 @@ var AngularFullstackGenerator = yeoman.generators.Base.extend({
   },
 
   generate: function() {
+    // if(this.config.get('filters').sass) this.copy('../../bootstrap-sass', './client/app/styles/bootstrap')
     this.sourceRoot(path.join(__dirname, './templates'));
     genUtils.processDirectory(this, '.', '.');
   },

@@ -18,7 +18,9 @@
     "angular-socket-io": "~0.6.0"<% } %><% if(filters.uirouter) { %>,
     "angular-ui-router": "~0.2.10"<% } %>,
     "restangular": "~1.4.0",
-    "angular-mocks": "~1.2.25"
+    "angular-mocks": "~1.2.25",
+    "toastr": "*",
+    "ng-Fx": "*"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",

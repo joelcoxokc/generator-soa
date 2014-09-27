@@ -10,6 +10,8 @@ module.exports = function(app) {
   app.use(cors());
   // Insert routes below
   app.use('/api/things', require('./api/thing'));
+  app.use('/api/messages', require('./api/message'));
+  app.use('/api/rooms', require('./api/room'));
   <% if (filters.auth) { %>app.use('/api/users', require('./api/user'));
 
   app.use('/api/auth', require('./auth'));

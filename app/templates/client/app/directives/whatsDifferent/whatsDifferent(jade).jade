@@ -1,0 +1,8 @@
+div.nav-stacked.col-md-4.col-lg-4.col-sm-6(ng-repeat='thing in things')
+    div.panel.panel-default
+        div.panel-body
+          a(href='#', tooltip='{{thing.info}}')
+            | {{thing.name}}
+            <% if(filters.socketio) { %>
+            button(type="button" class="close" ng-click="things.one(thing._id).remove()") &times;
+            <% } %>

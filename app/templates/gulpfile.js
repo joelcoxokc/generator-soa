@@ -70,31 +70,33 @@ gulp.task('clean',['remove:inject'], del.bind(null, ['./.tmp', './dist']));
  | Browser Sync Server for Dev Environment
  */
 gulp.task('browserSync', function(){
-  browserSync({
-    notify: false,
-    // https: true,
-    server: ['.tmp', 'client'],
-    socket: {
-      path: '/socket.io-client',
-      clientPath: '/socket.io-client',
-      namespace: '/socket.io-client'
-    }
-  });
-  gulp.watch(client.templates.jade, reload);
-  <% if(filters.sass){ %>gulp.watch(client.styles.sass, ['styles', reload]);<% } %>
-  <% if(filters.css){ %>gulp.watch(client.styles.css, ['styles', reload]);<% } %>
-  <% if(filters.less){ %>gulp.watch(client.styles.less, ['styles', reload]);<% } %>
-  gulp.watch(client.templates.jade, ['compile:templates'], reload);
-  gulp.watch(client.scripts.all, ['scripts']);
-  gulp.watch(client.images, reload);
+  // browserSync({
+  //   notify: false,
+  //   // https: true,
+  //   server: ['.tmp', 'client'],
+  //   socket: {
+  //     path: '/socket.io-client',
+  //     clientPath: '/socket.io-client',
+  //     namespace: '/socket.io-client'
+  //   }
+  // });
 });
 
 /*
  | Run all servers in the servers folder
  */
 gulp.task('run:servers', function(){
+  g.nodemon('./servers/server/app.js');
 
-  runServers.base();
+  <% if(filters.sass){ %>gulp.watch('./client/styles/**/*.scss', ['styles']);<% } %>
+  <% if(filters.css){ %>gulp.watch('./client/styles/**/*.css', ['styles']);<% } %>
+  <% if(filters.less){ %>gulp.watch('./client/styles/**/*.less', ['styles']);<% } %>
+
+
+  gulp.watch('./client/styles/**/*.scss', ['styles']);
+  gulp.watch(client.scripts.all, ['scripts']);
+  gulp.watch(client.templates.jade, ['compile:templates']);
+  gulp.watch(client.templates.html, ['compile:templates']);
 });
 
 /*
@@ -142,8 +144,9 @@ gulp.task('scripts', function(){
       add: true
     }))
     .pipe( g.uglify() )
-    .pipe( gulp.dest( dist.scriptPath ) )<% if(filters.js){ %>
-    .pipe( g.if(!browserSync.active, g.jshint.reporter('fail')));<% } %>
+    .pipe( gulp.dest( dist.scriptPath ) )
+    .pipe( g.livereload() )
+
 });
 
 /*
@@ -172,6 +175,7 @@ gulp.task('styles', function () {
     .pipe( gulp.dest( tmp.stylePath ) )<% if(!filters.sass){ %>
     .pipe( g.if('*.css', g.csso() ) )<% } %>
     .pipe( gulp.dest( dist.stylePath ) )
+    .pipe( g.livereload() )
 });
 
 /*
@@ -183,7 +187,8 @@ gulp.task('compile:jade', function(){
     .pipe( g.angularTemplatecache( config.jade_file_name, { module: config.module_name }))
     .pipe( gulp.dest( tmp.templatePath ))
     .pipe( g.uglify() )
-    .pipe( gulp.dest( dist.templatePath ) );
+    .pipe( gulp.dest( dist.templatePath ) )
+    .pipe( g.livereload() );
 });
 
 /*
@@ -194,7 +199,8 @@ gulp.task('compile:html', function(){
     .pipe( g.angularTemplatecache( config.html_file_name, { module: config.module_name } ) )
     .pipe( gulp.dest( tmp.templatePath ) )
     .pipe( g.uglify() )
-    .pipe( gulp.dest( dist.templatePath ) );
+    .pipe( gulp.dest( dist.templatePath ) )
+    .pipe( g.livereload() );
 });
 
 /*

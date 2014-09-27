@@ -1,0 +1,18 @@
+<div class="panel panel-default">
+  <div class="panel-heading">{{detail.room.name}}</div>
+  <div class="panel-body">
+    <form ng-submit="detail.addMessage()">
+      <div class="input-group">
+        <input type="text" class="form-control" ng-model="detail.message" placeholder="Message">
+        <span class="input-group-btn">
+          <button type="submit" class="btn btn-primary">Send</button>
+        </span>
+      </div>
+    </form>
+    <ul class="list-group">
+      <li class="list-group-item" ng-repeat="msg in detail.messages">
+        {{msg.text}}
+      </li>
+    </ul>
+  </div>
+</div>

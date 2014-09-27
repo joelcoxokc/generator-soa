@@ -1,0 +1,22 @@
+
+div(ng-include="'components/navbar/navbar.html'")
+di.col-md-4
+  div.panel.panel-default.panel-list
+    div.panel-heading
+      p Rooms
+      button.btn.btn-xs.btn-primary.pull-right(ng-class="{'btn-danger': vm.showNew}")
+        i.fa.fa-plus(ng-class="{'fa-minus': vm.showNew}")
+    di.panel-body
+      form(ng-submit="vm.addRoom()")
+        div.input-group(ng-show="vm.showNew")
+          input.form-control(type="text" ng-model="vm.newRoom" placeholder="Name")
+          span.input-group-btn
+            button.btn.btn-primary(type="submit")
+              i.fa.fa-plus
+      ul.list-group
+        li.list-group-item(ng-repeat="room in vm.rooms")
+          a(href="#/rooms/{{room._id}}") {{room.name}}
+            button.btn.btn-xs.btn-default.pull-right(ng-click="room.remove()")
+              i.fa.fa-minus
+di.col-md-8
+  ui-view
