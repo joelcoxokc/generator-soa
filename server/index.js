@@ -32,14 +32,6 @@ Generator.prototype.promptClientService = function () {
       message: "What type of angular component would you like to connect with?",
       choices: ["route", "service"],
       filter: function( val ) { return val.toLowerCase(); }
-    }{
-      name: 'route_dir',
-      message: 'Where would you like to create this route?',
-      default: 'client/app'
-    },{
-      name: 'route',
-      message: 'What will the url of your route be?',
-      default: '/' + name
     },{
       name: 'model_dir',
       message: 'Where would you like to create this client api model?',
@@ -48,30 +40,24 @@ Generator.prototype.promptClientService = function () {
   ]
   this.prompt(prompts, function (props) {
     this.servicePort = props.servicePort;
-    this.composeWith('ng-component:' +props.ngComponent, {arguments: this.arguments}, { local: require.resolve('generator-ng-component/'+props.ngComponent) });
+    this.composeWith('ng-modules:' + props.ngComponent, {arguments: this.arguments}, { local: require.resolve('generator-ng-modules/'+props.ngComponent) });
     // this.composeWith('ng-component:model', {arguments: this.arguments}, { local: require.resolve('generator-ng-component/model') });
-    this.route_dir = path.join(props.route_dir, this.name);
     this.model_dir = path.join(props.model_dir, this.name);
-    this.route = props.route;
     done();
   }.bind(this));
 };
 
-Generator..prototype.generateRoute = function(){
+
+// Generator.prototype.createFiles = function createFiles() {
+//   var basePath = this.config.get('basePath') || '';
+//   this.htmlUrl = ngUtil.relativeUrl(basePath, path.join(this.dir, this.name + '.html'));
+//   ngUtil.copyTemplates(this, 'route');
+// };
 
 
-
-};
-
-Generator.prototype.createFiles = function createFiles() {
-  var basePath = this.config.get('basePath') || '';
-  this.htmlUrl = ngUtil.relativeUrl(basePath, path.join(this.dir,this.name + '.html'));
-  ngUtil.copyTemplates(this, 'route');
-};
-}
 Generator.prototype.generateModel = function(){
   this.sourceRoot(path.join(__dirname, '../model'));
-  ngUtil.processDirectory(this, '.', this.dir)
+  ngUtil.processDirectory(this, '.', this.model_dir)
 }
 Generator.prototype.generateServer = function () {
 
